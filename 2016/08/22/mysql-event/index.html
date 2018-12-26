@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="以下示例都以 Mysql5.7 为基础  ++mysql的事件（event）就相当于Linux下的cron任务计划，只不过它可以调用一次或重复调用，并且它的精度可精确到秒。++">
+<meta name="keywords" content="mysql,事件,调度,event,schedule">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 事件">
+<meta property="og:url" content="http://blog.imgavin.me/2016/08/22/mysql-event/index.html">
+<meta property="og:site_name" content="Gavin&#39;s Blog">
+<meta property="og:description" content="以下示例都以 Mysql5.7 为基础  ++mysql的事件（event）就相当于Linux下的cron任务计划，只不过它可以调用一次或重复调用，并且它的精度可精确到秒。++">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-02-09T03:08:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL 事件">
+<meta name="twitter:description" content="以下示例都以 Mysql5.7 为基础  ++mysql的事件（event）就相当于Linux下的cron任务计划，只不过它可以调用一次或重复调用，并且它的精度可精确到秒。++">
+
+
+
+
+
+
+  <link rel="canonical" href="http://blog.imgavin.me/2016/08/22/mysql-event/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>MySQL 事件 | Gavin's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gavin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">宁愿小众,不愿平庸</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">主页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-技术">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-tech/" rel="section">技术</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-生活">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-life/" rel="section">生活</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+
+    
+
+    <a href="/about" rel="section">关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.imgavin.me/2016/08/22/mysql-event/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin">
+      <meta itemprop="description" content="宁愿小众,不愿平庸">
+      <meta itemprop="image" content="/uploads/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL 事件
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-08-22 14:59:30" itemprop="dateCreated datePublished" datetime="2016-08-22T14:59:30+08:00">2016-08-22</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/08/22/mysql-event/" class="leancloud_visitors" data-flag-title="MySQL 事件">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>以下示例都以 Mysql5.7 为基础</p>
+</blockquote>
+<p>++mysql的事件（event）就相当于Linux下的<code>cron</code>任务计划，只不过它可以调用一次或重复调用，并且它的精度可精确到秒。++</p>
+<a id="more"></a>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span></span><br><span class="line">    [DEFINER = &#123; <span class="keyword">user</span> | <span class="keyword">CURRENT_USER</span> &#125;]</span><br><span class="line">    <span class="keyword">EVENT</span></span><br><span class="line">    [<span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>]</span><br><span class="line">    event_name</span><br><span class="line">    <span class="keyword">ON</span> SCHEDULE schedule</span><br><span class="line">    [<span class="keyword">ON</span> COMPLETION [<span class="keyword">NOT</span>] <span class="keyword">PRESERVE</span>]</span><br><span class="line">    [<span class="keyword">ENABLE</span> | <span class="keyword">DISABLE</span> | <span class="keyword">DISABLE</span> <span class="keyword">ON</span> <span class="keyword">SLAVE</span>]</span><br><span class="line">    [<span class="keyword">COMMENT</span> <span class="string">'comment'</span>]</span><br><span class="line">    <span class="keyword">DO</span> event_body;</span><br><span class="line"></span><br><span class="line">schedule:</span><br><span class="line">    AT timestamp [+ INTERVAL interval] ...</span><br><span class="line">  | EVERY interval</span><br><span class="line">    [STARTS timestamp [+ INTERVAL interval] ...]</span><br><span class="line">    [ENDS timestamp [+ INTERVAL interval] ...]</span><br><span class="line"></span><br><span class="line">interval:</span><br><span class="line">    quantity &#123;YEAR | QUARTER | MONTH | DAY | HOUR | MINUTE |</span><br><span class="line">              WEEK | SECOND | YEAR_MONTH | DAY_HOUR | DAY_MINUTE |</span><br><span class="line">              DAY_SECOND | HOUR_MINUTE | HOUR_SECOND | MINUTE_SECOND&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>[IF NOT EXISTS]： 如果已经存在相同事件名，那就不创建事件，但会有一个警告提示。</p>
+</li>
+<li><p>event_name： 事件名称，不区分大小写，最好与存储过程名称一致。</p>
+</li>
+<li><p>ON SCHEDULE schedule： 调度字句，确定事件执行的时间与次数。两种形式。</p>
+<ul>
+<li><p>schedule第一种形式</p>
+<p>AT timestamp：一个时间点，只执行一次。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EVENT</span> e_at</span><br><span class="line">     <span class="keyword">ON</span> SCHEDULE <span class="keyword">AT</span> <span class="string">'2006-02-10 23:59:00'</span></span><br><span class="line">     <span class="keyword">COMMENT</span> <span class="string">'在2006-02-10 23:59:00清空表 tab_a'</span></span><br><span class="line">     <span class="keyword">DO</span> <span class="keyword">DELETE</span> <span class="keyword">FROM</span> tab_a;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>schedule第二种形式</p>
+<p>EVERY interval：每隔一段时间执行一次，循环执行。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EVENT</span> e_hourly</span><br><span class="line">    <span class="keyword">ON</span> SCHEDULE</span><br><span class="line">      EVERY <span class="number">1</span> <span class="keyword">HOUR</span></span><br><span class="line">    <span class="keyword">COMMENT</span> <span class="string">'每小时清空表 tab_a'</span></span><br><span class="line">    <span class="keyword">DO</span></span><br><span class="line">      <span class="keyword">DELETE</span> <span class="keyword">FROM</span> tab_a;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>[ON COMPLETION [NOT] PRESERVE]： 默认值，事件执行后删除事件，不再执行。</p>
+</li>
+<li><p>[ENABLE | DISABLE | DISABLE ON SLAVE]： 是否执行事件，如果是主从模式的从数据库那就是关闭的。</p>
+</li>
+<li><p>[COMMENT ‘comment’]： 这个事件的注释，64字符。</p>
+</li>
+<li><p>DO event_body： 待执行的sql语句。</p>
+</li>
+</ul>
+<h2 id="更多示例"><a href="#更多示例" class="headerlink" title="更多示例"></a>更多示例</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">event</span> </span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> event_1</span><br><span class="line"><span class="keyword">on</span> schedule </span><br><span class="line">	every <span class="number">30</span> <span class="keyword">MINUTE</span></span><br><span class="line"><span class="keyword">on</span> completion <span class="keyword">preserve</span></span><br><span class="line"><span class="keyword">comment</span> <span class="string">'每30分钟执行一次procedure1存储过程'</span></span><br><span class="line"><span class="keyword">do</span> <span class="keyword">call</span> procedure1();</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">event</span> event_2</span><br><span class="line"><span class="keyword">on</span> schedule </span><br><span class="line">	<span class="keyword">at</span> <span class="keyword">CURRENT_TIMESTAMP</span> + <span class="built_in">INTERVAL</span> <span class="number">5</span> <span class="keyword">DAY</span></span><br><span class="line"><span class="keyword">comment</span> <span class="string">'5天后清空表tab_2'</span>;</span><br><span class="line"><span class="keyword">do</span> <span class="keyword">truncate</span> <span class="keyword">table</span> tab_2;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">event</span> event_3</span><br><span class="line"><span class="keyword">on</span> schedule </span><br><span class="line">	every <span class="number">1</span> <span class="keyword">DAY</span></span><br><span class="line">    starts <span class="keyword">CURRENT_TIMESTAMP</span> + <span class="built_in">INTERVAL</span> <span class="number">5</span> <span class="keyword">DAY</span></span><br><span class="line"><span class="keyword">comment</span> <span class="string">'5天后开始每天清空表tab_3'</span>;</span><br><span class="line"><span class="keyword">do</span> <span class="keyword">truncate</span> <span class="keyword">table</span> tab_3;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">event</span> event_4</span><br><span class="line"><span class="keyword">on</span> schedule </span><br><span class="line">	every <span class="number">1</span> <span class="keyword">DAY</span></span><br><span class="line">    starts <span class="keyword">CURRENT_TIMESTAMP</span> + <span class="built_in">INTERVAL</span> <span class="number">5</span> <span class="keyword">DAY</span></span><br><span class="line">	ends <span class="keyword">CURRENT_TIMESTAMP</span> + <span class="built_in">INTERVAL</span> <span class="number">1</span> <span class="keyword">MONTH</span></span><br><span class="line"><span class="keyword">comment</span> <span class="string">'5天后开始每天清空表tab_4,1个月后结束'</span>;</span><br><span class="line"><span class="keyword">do</span> <span class="keyword">truncate</span> <span class="keyword">table</span> tab_4;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">event</span> event_5</span><br><span class="line"><span class="keyword">on</span> schedule </span><br><span class="line">	every <span class="number">1</span> <span class="keyword">DAY</span></span><br><span class="line"><span class="keyword">on</span> completion <span class="keyword">not</span> <span class="keyword">preserve</span></span><br><span class="line"><span class="keyword">comment</span> <span class="string">'每天清空表tab_5,但执行一天后，事件不再执行，被删除'</span>;</span><br><span class="line"><span class="keyword">do</span> <span class="keyword">truncate</span> <span class="keyword">table</span> tab_5;</span><br></pre></td></tr></table></figure>
+<h2 id="更多命令"><a href="#更多命令" class="headerlink" title="更多命令"></a>更多命令</h2><p>关闭事件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">event</span> event_1 <span class="keyword">disable</span>;</span><br></pre></td></tr></table></figure>
+<p>相对应的开启事件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">event</span> event_1 <span class="keyword">enable</span>;</span><br></pre></td></tr></table></figure>
+<p>删除事件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">event</span> [<span class="keyword">if</span> <span class="keyword">exists</span>] event_name;</span><br></pre></td></tr></table></figure>
+<p>查看当前事件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">events</span>\G;</span><br></pre></td></tr></table></figure>
+<p>查看当前正在执行的线程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW PROCESSLIST\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">     Id: 1</span><br><span class="line">   User: root</span><br><span class="line">   Host: localhost</span><br><span class="line">     db: NULL</span><br><span class="line">Command: Query</span><br><span class="line">   Time: 0</span><br><span class="line">  State: NULL</span><br><span class="line">   Info: show processlist</span><br><span class="line">*************************** 2. row ***************************</span><br><span class="line">     Id: 2</span><br><span class="line">   User: event_scheduler</span><br><span class="line">   Host: localhost</span><br><span class="line">     db: NULL</span><br><span class="line">Command: Daemon</span><br><span class="line">   Time: 3</span><br><span class="line">  State: Waiting <span class="keyword">for</span> next activation</span><br><span class="line">   Info: NULL</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p><a href="http://dev.mysql.com/doc/refman/5.7/en/create-event.html" target="_blank" rel="noopener">参考mysql官方文档</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Gavin 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Gavin 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+            <a href="/tags/事件/" rel="tag"># 事件</a>
+          
+            <a href="/tags/调度/" rel="tag"># 调度</a>
+          
+            <a href="/tags/event/" rel="tag"># event</a>
+          
+            <a href="/tags/schedule/" rel="tag"># schedule</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/11/php-cheat-sheet/" rel="next" title="PHP各种使用事项">
+                <i class="fa fa-chevron-left"></i> PHP各种使用事项
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/10/linux-cmd-lsof/" rel="prev" title="Linux 命令 - lsof">
+                Linux 命令 - lsof <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/portrait.jpg" alt="Gavin">
+            
+              <p class="site-author-name" itemprop="name">Gavin</p>
+              <p class="site-description motion-element" itemprop="description">宁愿小众,不愿平庸</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">73</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">114</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://github.com/gavin66" title="GitHub &rarr; https://github.com/gavin66" rel="noopener" target="_blank">GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.v2ex.com/member/ksaa0096329" title="V2EX &rarr; https://www.v2ex.com/member/ksaa0096329" rel="noopener" target="_blank">V2EX</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://segmentfault.com/u/gavin66" title="SegmentFault &rarr; https://segmentfault.com/u/gavin66" rel="noopener" target="_blank">SegmentFault</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="http://weibo.com/lanbert" title="微博 &rarr; http://weibo.com/lanbert" rel="noopener" target="_blank">微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.zhihu.com/people/Gavin23" title="知乎 &rarr; https://www.zhihu.com/people/Gavin23" rel="noopener" target="_blank">知乎</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.douban.com/people/imgavin66" title="豆瓣 &rarr; https://www.douban.com/people/imgavin66" rel="noopener" target="_blank">豆瓣</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#语法"><span class="nav-number">1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更多示例"><span class="nav-number">2.</span> <span class="nav-text">更多示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更多命令"><span class="nav-number">3.</span> <span class="nav-text">更多命令</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gavin</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.6.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz",
+                'X-LC-Key': "ygD46J8JRaC0GkifemEHlXCf",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script src="/js/src/js.cookie.js?v=6.6.0"></script>
+  <script src="/js/src/scroll-cookie.js?v=6.6.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

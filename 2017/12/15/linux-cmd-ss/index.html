@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。但ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。 当服务器的socket连接数量变得非常大时，无论是使用netstat命令还是直接cat /proc/net/tcp，执行速度都会很慢。可能你不会有切身的感受，但">
+<meta name="keywords" content="命令,Linux,ss">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令 - ss">
+<meta property="og:url" content="http://blog.imgavin.me/2017/12/15/linux-cmd-ss/index.html">
+<meta property="og:site_name" content="Gavin&#39;s Blog">
+<meta property="og:description" content="ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。但ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。 当服务器的socket连接数量变得非常大时，无论是使用netstat命令还是直接cat /proc/net/tcp，执行速度都会很慢。可能你不会有切身的感受，但">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-19T07:15:11.365Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令 - ss">
+<meta name="twitter:description" content="ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。但ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。 当服务器的socket连接数量变得非常大时，无论是使用netstat命令还是直接cat /proc/net/tcp，执行速度都会很慢。可能你不会有切身的感受，但">
+
+
+
+
+
+
+  <link rel="canonical" href="http://blog.imgavin.me/2017/12/15/linux-cmd-ss/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Linux 命令 - ss | Gavin's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gavin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">宁愿小众,不愿平庸</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">主页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-技术">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-tech/" rel="section">技术</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-生活">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-life/" rel="section">生活</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+
+    
+
+    <a href="/about" rel="section">关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.imgavin.me/2017/12/15/linux-cmd-ss/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin">
+      <meta itemprop="description" content="宁愿小众,不愿平庸">
+      <meta itemprop="image" content="/uploads/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 命令 - ss
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-12-15 11:10:58" itemprop="dateCreated datePublished" datetime="2017-12-15T11:10:58+08:00">2017-12-15</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/15/linux-cmd-ss/" class="leancloud_visitors" data-flag-title="Linux 命令 - ss">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。但ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。</p>
+<p>当服务器的socket连接数量变得非常大时，无论是使用netstat命令还是直接cat /proc/net/tcp，执行速度都会很慢。可能你不会有切身的感受，但请相信我，当服务器维持的连接达到上万个的时候，使用netstat等于浪费 生命，而用ss才是节省时间。</p>
+<p>天下武功唯快不破。ss快的秘诀在于，它利用到了TCP协议栈中tcp_diag。tcp_diag是一个用于分析统计的模块，可以获得Linux 内核中第一手的信息，这就确保了ss的快捷高效。当然，如果你的系统中没有tcp_diag，ss也可以正常运行，只是效率会变得稍慢。（但仍然比 netstat要快。）</p>
+<a id="more"></a>
+<h1 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h1><p>-h, –help    帮助信息</p>
+<p>-V, –version    程序版本信息</p>
+<p>-n, –numeric    不解析服务名称</p>
+<p>-r, –resolve        解析主机名</p>
+<p>-a, –all    显示所有套接字（sockets）</p>
+<p>-l, –listening    显示监听状态的套接字（sockets）</p>
+<p>-o, –options        显示计时器信息</p>
+<p>-e, –extended       显示详细的套接字（sockets）信息</p>
+<p>-m, –memory         显示套接字（socket）的内存使用情况</p>
+<p>-p, –processes    显示使用套接字（socket）的进程</p>
+<p>-i, –info    显示 TCP内部信息</p>
+<p>-s, –summary    显示套接字（socket）使用概况</p>
+<p>-4, –ipv4           仅显示IPv4的套接字（sockets）</p>
+<p>-6, –ipv6           仅显示IPv6的套接字（sockets）</p>
+<p>-0, –packet            显示 PACKET 套接字（socket）</p>
+<p>-t, –tcp    仅显示 TCP套接字（sockets）</p>
+<p>-u, –udp    仅显示 UCP套接字（sockets）</p>
+<p>-d, –dccp    仅显示 DCCP套接字（sockets）</p>
+<p>-w, –raw    仅显示 RAW套接字（sockets）</p>
+<p>-x, –unix    仅显示 Unix套接字（sockets）</p>
+<p>-f, –family=FAMILY  显示 FAMILY类型的套接字（sockets），FAMILY可选，支持  unix, inet, inet6, link, netlink</p>
+<p>-A, –query=QUERY, –socket=QUERY</p>
+<p>​      QUERY := {all|inet|tcp|udp|raw|unix|packet|netlink}[,QUERY]</p>
+<p>-D, –diag=FILE     将原始TCP套接字（sockets）信息转储到文件</p>
+<p> -F, –filter=FILE   从文件中都去过滤器信息</p>
+<p>​       FILTER := [ state TCP-STATE ] [ EXPRESSION ]</p>
+<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><ol>
+<li><p>显示TCP连接</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ss -at</span></span><br><span class="line">State      Recv-Q Send-Q                                Local Address:Port                                    Peer Address:Port   </span><br><span class="line">LISTEN     0      0                                         127.0.0.1:smux                                               *:*       </span><br><span class="line">LISTEN     0      0                                                 *:3690                                               *:*       </span><br><span class="line">LISTEN     0      0                                                 *:ssh                                                *:*       </span><br><span class="line">ESTAB      0      0                                   192.168.120.204:ssh                                        10.2.0.68:49368</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示 Sockets 摘要</p>
+<p>列出当前的established, closed, orphaned and waiting TCP sockets</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ss -s</span></span><br><span class="line">Total: 34 (kernel 48)</span><br><span class="line">TCP:   4 (estab 1, closed 0, orphaned 0, synrecv 0, timewait 0/0), ports 3</span><br><span class="line"></span><br><span class="line">Transport Total     IP        IPv6</span><br><span class="line">*         48        -         -        </span><br><span class="line">RAW       0         0         0        </span><br><span class="line">UDP       5         5         0        </span><br><span class="line">TCP       4         4         0        </span><br><span class="line">INET      9         9         0        </span><br><span class="line">FRAG      0         0         0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出所有打开的网络连接端口</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ss -l</span></span><br><span class="line">Recv-Q Send-Q                                     Local Address:Port                                         Peer Address:Port   </span><br><span class="line">0      0                                              127.0.0.1:smux                                                    *:*       </span><br><span class="line">0      0                                                      *:3690                                                    *:*       </span><br><span class="line">0      0                                                      *:ssh                                                     *:*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看进程使用的socket</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ss -pl</span></span><br><span class="line">Recv-Q Send-Q                                     Local Address:Port                                         Peer Address:Port   </span><br><span class="line">0      0                                              127.0.0.1:smux                                                    *:*        users:((<span class="string">"snmpd"</span>,2716,8))</span><br><span class="line">0      0                                                      *:3690                                                    *:*        users:((<span class="string">"svnserve"</span>,3590,3))</span><br><span class="line">0      0                                                      *:ssh                                                     *:*        users:((<span class="string">"sshd"</span>,2735,3))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找出打开套接字/端口应用程序</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ss -lp|grep 1935</span></span><br><span class="line">0      0                            *:1935                          *:*        users:((<span class="string">"fmsedge"</span>,2913,18))</span><br><span class="line">0      0                    127.0.0.1:19350                         *:*        users:((<span class="string">"fmsedge"</span>,2913,17))</span><br><span class="line">[root@localhost ~]<span class="comment"># ss -lp|grep 3306</span></span><br><span class="line">0      0                            *:3306                          *:*        users:((<span class="string">"mysqld"</span>,2871,10))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示所有UDP Sockets</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ss -au</span></span><br><span class="line">State      Recv-Q Send-Q                                Local Address:Port                                    Peer Address:Port   </span><br><span class="line">UNCONN     0      0                                         127.0.0.1:syslog                                             *:*       </span><br><span class="line">UNCONN     0      0                                                 *:snmp                                               *:*       </span><br><span class="line">ESTAB      0      0                                   192.168.120.203:39641                                  10.58.119.119:domain</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示所有状态为established的SMTP连接</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ss -o state established '( dport = :smtp or sport = :smtp )' </span></span><br><span class="line">Recv-Q Send-Q                                     Local Address:Port                                         Peer Address:Port</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示所有状态为Established的HTTP连接</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ss -o state established '( dport = :http or sport = :http )' </span></span><br><span class="line">Recv-Q Send-Q                                     Local Address:Port                                         Peer Address:Port   </span><br><span class="line">0      0                                              75.126.153.214:2164                                        192.168.10.42:http</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列举出处于 FIN-WAIT-1状态的源端口为 80或者 443，目标网络为 193.233.7/24所有 tcp套接字</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ss -o state fin-wait-1 <span class="string">'( sport = :http or sport = :https )'</span> dst 193.233.7/24</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用TCP 状态过滤Sockets:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ss -4 state FILTER-NAME-HERE </span><br><span class="line">ss -6 state FILTER-NAME-HERE</span><br></pre></td></tr></table></figure>
+<p>[root@localhost ~]#ss -4 state closing<br>Recv-Q Send-Q                                                  Local Address:Port                                                      Peer Address:Port<br>1      11094                                                  75.126.153.214:http                                                      192.168.10.42:4669<br>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line">    FILTER-NAME-HERE 可以代表以下任何一个：</span><br><span class="line">    </span><br><span class="line">    established</span><br><span class="line">    </span><br><span class="line">    syn-sent</span><br><span class="line">    </span><br><span class="line">    syn-recv</span><br><span class="line">    </span><br><span class="line">    fin-wait-1</span><br><span class="line">    </span><br><span class="line">    fin-wait-2</span><br><span class="line">    </span><br><span class="line">    time-wait</span><br><span class="line">    </span><br><span class="line">    closed</span><br><span class="line">    </span><br><span class="line">    close-wait</span><br><span class="line">    </span><br><span class="line">    last-ack</span><br><span class="line">    </span><br><span class="line">    listen</span><br><span class="line">    </span><br><span class="line">    closing</span><br><span class="line"></span><br><span class="line">​     </span><br><span class="line"></span><br><span class="line">    all : 所有以上状态</span><br><span class="line"></span><br><span class="line">    connected : 除了listen and closed的所有状态</span><br><span class="line"></span><br><span class="line">    synchronized :所有已连接的状态除了syn-sent</span><br><span class="line"></span><br><span class="line">    bucket : 显示状态为maintained as minisockets,如：time-wait和syn-recv.</span><br><span class="line"></span><br><span class="line">    big : 和bucket相反.</span><br><span class="line"></span><br><span class="line">11. 匹配远程地址和端口号</span><br><span class="line"></span><br><span class="line">    ```sh</span><br><span class="line">    ss dst ADDRESS_PATTERN</span><br><span class="line">    ss dst 192.168.1.5</span><br><span class="line">    ss dst 192.168.119.113:http </span><br><span class="line">    ss dst 192.168.119.113:smtp </span><br><span class="line">    ss dst 192.168.119.113:443</span><br></pre></td></tr></table></figure></p>
+<p>[root@localhost ~]# ss dst 192.168.119.113<br>State      Recv-Q Send-Q                                Local Address:Port                                    Peer Address:Port<br>ESTAB      0      0                                   192.168.119.103:16014                                192.168.119.113:20229<br>ESTAB      0      0                                   192.168.119.103:16014                                192.168.119.113:61056<br>ESTAB      0      0                                   192.168.119.103:16014                                192.168.119.113:61623<br>ESTAB      0      0                                   192.168.119.103:16014                                192.168.119.113:60924<br>ESTAB      0      0                                   192.168.119.103:16050                                192.168.119.113:43701<br>ESTAB      0      0                                   192.168.119.103:16073                                192.168.119.113:32930<br>ESTAB      0      0                                   192.168.119.103:16073                                192.168.119.113:49318<br>ESTAB      0      0                                   192.168.119.103:16014                                192.168.119.113:3844<br>[root@localhost ~]# ss dst 192.168.119.113:http<br>State      Recv-Q Send-Q                                Local Address:Port                                    Peer Address:Port<br>[root@localhost ~]# ss dst 192.168.119.113:3844<br>State      Recv-Q Send-Q                                Local Address:Port                                    Peer Address:Port<br>ESTAB      0      0                                   192.168.119.103:16014                                192.168.119.113:3844<br>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">12. 匹配本地地址和端口号</span><br><span class="line"></span><br><span class="line">    ```sh</span><br><span class="line">    ss src ADDRESS_PATTERN</span><br><span class="line">    ss src 192.168.119.103</span><br><span class="line">    ss src 192.168.119.103:http</span><br><span class="line">    ss src 192.168.119.103:80</span><br><span class="line">    ss src 192.168.119.103:smtp</span><br><span class="line">    ss src 192.168.119.103:25</span><br></pre></td></tr></table></figure></p>
+<p>[root@localhost ~]# ss src 192.168.119.103:16021<br>State      Recv-Q Send-Q                                Local Address:Port                                    Peer Address:Port<br>ESTAB      0      0                                   192.168.119.103:16021                                192.168.119.201:63054<br>ESTAB      0      0                                   192.168.119.103:16021                                192.168.119.201:62894<br>ESTAB      0      0                                   192.168.119.103:16021                                192.168.119.201:63055<br>ESTAB      0      0                                   192.168.119.103:16021                                192.168.119.201:2274<br>ESTAB      0      0                                   192.168.119.103:16021                                192.168.119.201:44784<br>ESTAB      0      0                                   192.168.119.103:16021                                192.168.119.201:7233<br>ESTAB      0      0                                   192.168.119.103:16021                                192.168.119.103:58660<br>ESTAB      0      0                                   192.168.119.103:16021                                192.168.119.201:44822<br>ESTAB      0      0                                   192.168.119.103:16021                                     10.2.1.206:56737<br>ESTAB      0      0                                   192.168.119.103:16021                                     10.2.1.206:57487<br>ESTAB      0      0                                   192.168.119.103:16021                                     10.2.1.206:56736<br>ESTAB      0      0                                   192.168.119.103:16021                                     10.2.1.206:64652<br>ESTAB      0      0                                   192.168.119.103:16021                                     10.2.1.206:56586<br>ESTAB      0      0                                   192.168.119.103:16021                                     10.2.1.206:64653<br>ESTAB      0      0                                   192.168.119.103:16021                                     10.2.1.206:56587<br>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">13. 将本地或者远程端口和一个数比较</span><br><span class="line"></span><br><span class="line">    ```sh</span><br><span class="line">    ss dport OP PORT </span><br><span class="line">    ss sport OP PORT</span><br></pre></td></tr></table></figure></p>
+<p>[root@localhost ~]# ss  sport = :http<br>[root@localhost ~]# ss  dport = :http<br>[root@localhost ~]# ss  dport > :1024<br>[root@localhost ~]# ss  sport > :1024<br>[root@localhost ~]# ss sport \&lt; :32000<br>[root@localhost ~]# ss  sport eq :22<br>[root@localhost ~]# ss  dport != :22<br>[root@localhost ~]# ss  state connected sport = :http<br>[root@localhost ~]# ss ( sport = :http or sport = :https )<br>[root@localhost ~]# ss -o state fin-wait-1 ( sport = :http or sport = :https ) dst 192.168.1/24<br>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line">    ss dport OP PORT 远程端口和一个数比较；ss sport OP PORT 本地端口和一个数比较。</span><br><span class="line">    </span><br><span class="line">    OP 可以代表以下任意一个: </span><br><span class="line">    </span><br><span class="line">    &lt;= or le : 小于或等于端口号</span><br><span class="line">    </span><br><span class="line">    \&gt;= or ge : 大于或等于端口号</span><br><span class="line">    </span><br><span class="line">    == or eq : 等于端口号</span><br><span class="line">    </span><br><span class="line">    != or ne : 不等于端口号</span><br><span class="line">    </span><br><span class="line">    &lt; or gt : 小于端口号</span><br><span class="line">    </span><br><span class="line">    \&gt; or lt : 大于端口号</span><br><span class="line"></span><br><span class="line">14. ss 和 netstat 效率对比</span><br><span class="line"></span><br><span class="line">    ```sh</span><br><span class="line">    time netstat -at</span><br><span class="line">    time ss</span><br><span class="line"></span><br><span class="line">    [root@localhost ~]# time ss   </span><br><span class="line">    real    0m0.739s</span><br><span class="line">    user    0m0.019s</span><br><span class="line">    sys     0m0.013s</span><br><span class="line">    [root@localhost ~]# </span><br><span class="line">    [root@localhost ~]# time netstat -at</span><br><span class="line">    real    2m45.907s</span><br><span class="line">    user    0m0.063s</span><br><span class="line">    sys     0m0.067s</span><br></pre></td></tr></table></figure></p>
+<p>用time 命令分别获取通过netstat和ss命令获取程序和概要占用资源所使用的时间。在服务器连接数比较多的时候，netstat的效率完全没法和ss比。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Gavin 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Gavin 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/命令/" rel="tag"># 命令</a>
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/ss/" rel="tag"># ss</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/25/mysql-replication/" rel="next" title="MySQL 主从复制">
+                <i class="fa fa-chevron-left"></i> MySQL 主从复制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/31/2017-annual-summary/" rel="prev" title="2017年度总结">
+                2017年度总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/portrait.jpg" alt="Gavin">
+            
+              <p class="site-author-name" itemprop="name">Gavin</p>
+              <p class="site-description motion-element" itemprop="description">宁愿小众,不愿平庸</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">73</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">114</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://github.com/gavin66" title="GitHub &rarr; https://github.com/gavin66" rel="noopener" target="_blank">GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.v2ex.com/member/ksaa0096329" title="V2EX &rarr; https://www.v2ex.com/member/ksaa0096329" rel="noopener" target="_blank">V2EX</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://segmentfault.com/u/gavin66" title="SegmentFault &rarr; https://segmentfault.com/u/gavin66" rel="noopener" target="_blank">SegmentFault</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="http://weibo.com/lanbert" title="微博 &rarr; http://weibo.com/lanbert" rel="noopener" target="_blank">微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.zhihu.com/people/Gavin23" title="知乎 &rarr; https://www.zhihu.com/people/Gavin23" rel="noopener" target="_blank">知乎</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.douban.com/people/imgavin66" title="豆瓣 &rarr; https://www.douban.com/people/imgavin66" rel="noopener" target="_blank">豆瓣</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参数"><span class="nav-number">1.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实例"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gavin</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.6.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz",
+                'X-LC-Key': "ygD46J8JRaC0GkifemEHlXCf",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script src="/js/src/js.cookie.js?v=6.6.0"></script>
+  <script src="/js/src/scroll-cookie.js?v=6.6.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

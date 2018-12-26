@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="此篇文章主要是记录本人平时开发或生产环境所常用软件的配置。基本都是基于 CentOS7 来进行配置的. 系统设置系统信息查询12345# uname命令用于打印当前系统相关信息（内核版本号、硬件架构、主机名称和操作系统类型等）uname -a# 查看 Linux 发行版cat /etc/rehat-release 内核1234567891011vim /etc/security/limits.co">
+<meta name="keywords" content="linux,centos,zsh,python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS 新服务器环境设置与Web服务等搭建">
+<meta property="og:url" content="http://blog.imgavin.me/2017/06/10/centos-environment/index.html">
+<meta property="og:site_name" content="Gavin&#39;s Blog">
+<meta property="og:description" content="此篇文章主要是记录本人平时开发或生产环境所常用软件的配置。基本都是基于 CentOS7 来进行配置的. 系统设置系统信息查询12345# uname命令用于打印当前系统相关信息（内核版本号、硬件架构、主机名称和操作系统类型等）uname -a# 查看 Linux 发行版cat /etc/rehat-release 内核1234567891011vim /etc/security/limits.co">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.imgavin.me/2017/06/10/centos-environment/p1.png">
+<meta property="og:image" content="http://blog.imgavin.me/2017/06/10/centos-environment/p2.png">
+<meta property="og:updated_time" content="2018-04-23T03:48:50.333Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CentOS 新服务器环境设置与Web服务等搭建">
+<meta name="twitter:description" content="此篇文章主要是记录本人平时开发或生产环境所常用软件的配置。基本都是基于 CentOS7 来进行配置的. 系统设置系统信息查询12345# uname命令用于打印当前系统相关信息（内核版本号、硬件架构、主机名称和操作系统类型等）uname -a# 查看 Linux 发行版cat /etc/rehat-release 内核1234567891011vim /etc/security/limits.co">
+<meta name="twitter:image" content="http://blog.imgavin.me/2017/06/10/centos-environment/p1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://blog.imgavin.me/2017/06/10/centos-environment/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>CentOS 新服务器环境设置与Web服务等搭建 | Gavin's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gavin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">宁愿小众,不愿平庸</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">主页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-技术">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-tech/" rel="section">技术</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-生活">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-life/" rel="section">生活</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+
+    
+
+    <a href="/about" rel="section">关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.imgavin.me/2017/06/10/centos-environment/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin">
+      <meta itemprop="description" content="宁愿小众,不愿平庸">
+      <meta itemprop="image" content="/uploads/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CentOS 新服务器环境设置与Web服务等搭建
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-06-10 14:20:51" itemprop="dateCreated datePublished" datetime="2017-06-10T14:20:51+08:00">2017-06-10</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/10/centos-environment/" class="leancloud_visitors" data-flag-title="CentOS 新服务器环境设置与Web服务等搭建">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div class="note warning"><p>此篇文章主要是记录本人平时开发或生产环境所常用软件的配置。</p><p><strong>基本都是基于 CentOS7 来进行配置的.</strong></p></div>
+<h1 id="系统设置"><a href="#系统设置" class="headerlink" title="系统设置"></a>系统设置</h1><h2 id="系统信息查询"><a href="#系统信息查询" class="headerlink" title="系统信息查询"></a>系统信息查询</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># uname命令用于打印当前系统相关信息（内核版本号、硬件架构、主机名称和操作系统类型等）</span></span><br><span class="line">uname -a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 Linux 发行版</span></span><br><span class="line">cat /etc/rehat-release</span><br></pre></td></tr></table></figure>
+<h2 id="内核"><a href="#内核" class="headerlink" title="内核"></a>内核</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/security/limits.conf</span><br><span class="line"><span class="comment"># 添加以下配置</span></span><br><span class="line">* soft nofile 100001</span><br><span class="line">* hard nofile 100002</span><br><span class="line">root soft nofile 100001</span><br><span class="line">root hard nofile 100002</span><br><span class="line"></span><br><span class="line">vim /etc/systemd/system.conf</span><br><span class="line"><span class="comment"># 修改以下配置</span></span><br><span class="line">DefaultTimeoutStopSec=30s</span><br><span class="line">DefaultLimitNOFILE=1000000</span><br></pre></td></tr></table></figure>
+<h2 id="配置静态-IP"><a href="#配置静态-IP" class="headerlink" title="配置静态 IP"></a>配置静态 IP</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看网络设备</span></span><br><span class="line">ip addr show</span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据设备名不同，修改配置文件</span></span><br><span class="line">vi /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line"><span class="comment">#############</span></span><br><span class="line">IPADDR=192.168.1.100 <span class="comment"># 静态 IP</span></span><br><span class="line">GATEWAY=192.168.1.10 <span class="comment"># 默认网关</span></span><br><span class="line">NETMASK=255.255.255.0 <span class="comment"># 子网掩码</span></span><br><span class="line">DNS1=192.168.1.10 <span class="comment"># DNS</span></span><br><span class="line">DNS1=192.168.1.11</span><br><span class="line"><span class="comment">#############</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置完成，重启网络服务</span></span><br><span class="line">service network restart</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试联通性</span></span><br><span class="line">ping -c3 baidu.com</span><br></pre></td></tr></table></figure>
+<h2 id="修改主机名称"><a href="#修改主机名称" class="headerlink" title="修改主机名称"></a>修改主机名称</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 查看当前主机名称</span><br><span class="line">hostname</span><br><span class="line"></span><br><span class="line"># 修改hostname文件，重启后可看效果</span><br><span class="line">vim /etc/hostname</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="修改中文字符集"><a href="#修改中文字符集" class="headerlink" title="修改中文字符集"></a>修改中文字符集</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 当前设置的字符集</span></span><br><span class="line">locale</span><br><span class="line"><span class="comment"># 查看支持的字符集</span></span><br><span class="line">locale -a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装简体中文语言包</span></span><br><span class="line">yum install kde-l10n-Chinese</span><br><span class="line"></span><br><span class="line">vi /etc/locale.conf</span><br><span class="line"><span class="comment">##加下面内容到第一行，设置中文</span></span><br><span class="line">LANG=zh_CN.UTF8</span><br><span class="line"></span><br><span class="line">localectl  <span class="built_in">set</span>-locale LANG=zh_CN.UTF8</span><br></pre></td></tr></table></figure>
+<h2 id="YUM"><a href="#YUM" class="headerlink" title="YUM"></a>YUM</h2><p>系统默认的 yum 源速度很一般，为了快速下载安装，需要把 yum 源修改成国内的.</p>
+<p><strong>如果你是阿里云的机器,不需要此操作</strong></p>
+<ul>
+<li><p>修改 yum 源</p>
+<ol>
+<li><p>备份</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用阿里 yum 源,下载新的 *.repo 到 /etc/yum.repos.d/</p>
+<ul>
+<li><p>CentOS 5</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-5.repo</span><br><span class="line">curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-5.repo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>CentOS 6</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo</span><br><span class="line">curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>CentOS 7</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span><br><span class="line">curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><a href="https://opsx.alibaba.com/mirror" target="_blank" rel="noopener">阿里云开源镜像站</a>，<a href="http://mirrors.163.com/" target="_blank" rel="noopener">网易开源镜像站</a>，<a href="https://webtatic.com/projects/yum-repository/" target="_blank" rel="noopener">Webtatic 源</a>(速度不如国内镜像，但软件能找到比较新的版本，如 PHP7)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 网易安装 epel 源</span><br><span class="line">yum install -y epel-release</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成缓存</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum clean all &amp;&amp; yum makecache</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>系统软件全面更新</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum update &amp;&amp; yum upgrade</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>其他命令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询 rpm 包的具体名称</span></span><br><span class="line">rpm -qa | grep nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示安装包文件列表</span></span><br><span class="line">rpm -q nginx-1.12.2-1.el7.x86_64</span><br><span class="line"><span class="comment"># 查询 centos 版本</span></span><br><span class="line">rpm -q centos-release</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 yum 源</span></span><br><span class="line">yum repolist</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 yum 管理工具集</span></span><br><span class="line">yum -y install yum-utils</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ol start="4">
+<li><p>如果手动编译安装一些 yum 源没有的软件,那么一些必要的基础环境(<code>gcc</code>,<code>gcc-c++</code>,<code>make</code>等)需要尽量安装全.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum groupinstall <span class="string">'Development Tools'</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="效率工具"><a href="#效率工具" class="headerlink" title="效率工具"></a>效率工具</h1><h2 id="gpm"><a href="#gpm" class="headerlink" title="gpm"></a>gpm</h2><p>让命令行界面支持鼠标选中粘贴</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install gpm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开机启动</span></span><br><span class="line">systemctl <span class="built_in">enable</span> gpm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line">systemctl start gpm</span><br></pre></td></tr></table></figure>
+<h2 id="w3m"><a href="#w3m" class="headerlink" title="w3m"></a>w3m</h2><p>w3m是一个基于文本的网页浏览器，支持多种操作系统，在命令行终端可以很好的支持中文。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install w3m</span><br></pre></td></tr></table></figure>
+<ul>
+<li><a href="http://wiki.ubuntu.org.cn/W3m" target="_blank" rel="noopener">ubuntu w3m wiki</a></li>
+<li><a href="http://lujun9972.github.io/blog/2016/12/11/w3m%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">w3m常用操作</a></li>
+</ul>
+<h2 id="Zsh"><a href="#Zsh" class="headerlink" title="Zsh"></a>Zsh</h2><p><a href="https://wiki.archlinux.org/index.php/Zsh_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" target="_blank" rel="noopener">Zsh</a>) 是一款功能强大终端（shell）软件，既可以作为一个交互式终端，也可以作为一个脚本解释器。它在兼容 <a href="https://wiki.archlinux.org/index.php/Bash" target="_blank" rel="noopener">Bash</a> 的同时 (默认不兼容，除非设置成 <code>emulate sh</code>) 还有提供了很多改进，例如：</p>
+<ul>
+<li>更高效</li>
+</ul>
+<ul>
+<li>更好的自动补全</li>
+<li>更好的文件名展开（通配符展开）</li>
+<li>更好的数组处理</li>
+<li>可定制性高</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装</span></span><br><span class="line">yum install zsh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看你的所有 shell,找到 zsh 的目录</span></span><br><span class="line">chsh -l</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 shell, 从上面找到的</span></span><br><span class="line">chsh -s /bin/zsh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 之后重新登录 shell,查看当前是否正确</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br></pre></td></tr></table></figure>
+<h3 id="oh-my-zsh"><a href="#oh-my-zsh" class="headerlink" title="oh-my-zsh"></a><a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">oh-my-zsh</a></h3><p>一个管理 zsh 配置的第三方扩展.让你使用 zsh 更简单.不用理会繁杂的配置.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 通过 curl 安装</span><br><span class="line">sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;</span><br><span class="line"></span><br><span class="line"># 通过 wget 安装</span><br><span class="line">sh -c &quot;$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)&quot;</span><br><span class="line"></span><br><span class="line"># 以上两者选其一</span><br><span class="line"></span><br><span class="line"># 修改你的 $HOME/.zshrc 文件,添加你喜欢的插件和主题,这里是示例</span><br><span class="line">plugins=(git bundler osx rake ruby)</span><br><span class="line">ZSH_THEME=&quot;robbyrussell&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="bullet-train-zsh"><a href="#bullet-train-zsh" class="headerlink" title="bullet-train.zsh"></a><a href="https://github.com/caiogondim/bullet-train.zsh" target="_blank" rel="noopener">bullet-train.zsh</a></h2><p>oh-my-zsh 的主题</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载主题放到 $ZSH_CUSTOM/themes/ 目录中</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改 zshrc 文件</span></span><br><span class="line"><span class="comment"># zsh 状态条显示类型与顺序</span></span><br><span class="line">ZSH_THEME=<span class="string">"bullet-train"</span></span><br><span class="line">BULLETTRAIN_PROMPT_ORDER=(</span><br><span class="line">  context</span><br><span class="line">  time</span><br><span class="line">  status</span><br><span class="line">  dir</span><br><span class="line">  git</span><br><span class="line">  hg</span><br><span class="line">  cmd_exec_time</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<div class="note warning"><p>需要安装 powerline</p></div>
+<h2 id="powerline"><a href="#powerline" class="headerlink" title="powerline"></a><a href="https://github.com/powerline/powerline" target="_blank" rel="noopener">powerline</a></h2><p>一个 vim 的状态栏插件,但是也提供了其他的应用 zsh, bash, tmux, IPython, Awesome and Qtile</p>
+<img src="/2017/06/10/centos-environment/p1.png" title="效果图">
+<p><a href="https://powerline.readthedocs.io/en/latest/" target="_blank" rel="noopener">https://powerline.readthedocs.io/en/latest/</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 python pip 安装</span></span><br><span class="line">pip install powerline-status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装字体</span></span><br><span class="line"><span class="comment"># 如果你使用的终端本身就支持 powerline 字体,那么你就不需要安装</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 首先确保你有 fontconfig,CentOS 应该默认是没有的,需要安装</span></span><br><span class="line">yum install fontconfig</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载字体</span></span><br><span class="line">wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf</span><br><span class="line">wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装</span></span><br><span class="line">mv PowerlineSymbols.otf ~/.fonts/</span><br><span class="line"><span class="built_in">fc</span>-cache -vf ~/.fonts/</span><br><span class="line">mv 10-powerline-symbols.conf ~/.config/fontconfig/conf.d/</span><br></pre></td></tr></table></figure>
+<p>编辑你的 <code>zshrc</code> 文件,添加如下配置(针对 shell 为 zsh 的)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">powerline-daemon -q</span><br><span class="line">. /usr/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh</span><br></pre></td></tr></table></figure>
+<img src="/2017/06/10/centos-environment/p2.png" title="查看你的 powerline 安装路径">
+<h3 id="Vundle-vim"><a href="#Vundle-vim" class="headerlink" title="Vundle.vim"></a><a href="https://github.com/VundleVim/Vundle.vim" target="_blank" rel="noopener">Vundle.vim</a></h3><p>vim 的插件管理器</p>
+<p>初始安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle</span><br></pre></td></tr></table></figure>
+<p>修改 <code>vimrc</code> 文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> nocompatible              <span class="string">" 去除VI一致性,必须</span></span><br><span class="line"><span class="string">filetype off                  "</span> 必须</span><br><span class="line"></span><br><span class="line"><span class="string">" 设置包括vundle和初始化相关的runtime path</span></span><br><span class="line"><span class="string">set rtp+=~/.vim/bundle/Vundle.vim</span></span><br><span class="line"><span class="string">call vundle#begin()</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span> 让vundle管理插件版本,必须</span><br><span class="line">Plugin <span class="string">'VundleVim/Vundle.vim'</span></span><br><span class="line">Plugin <span class="string">'powerline/powerline'</span>, &#123;<span class="string">'rtp'</span>: <span class="string">'powerline/bindings/vim/'</span>&#125;</span><br><span class="line"></span><br><span class="line">call vundle<span class="comment">#end()            " 必须</span></span><br><span class="line">filetype plugin indent on    <span class="string">" 必须 加载vim自带和插件相应的语法和文件类型相关脚本</span></span><br></pre></td></tr></table></figure>
+<p>运行 <code>vim</code> 再运行 <code>:PluginInstall</code> 来安装插件</p>
+<p>或者通过命令行直接安装 <code>vim +PluginInstall +qall</code></p>
+<div class="note warning"><p>这里使用了 powerline/powerline 插件,需安装 powerline,上一步有提到.</p></div>
+<h3 id="vim-airline-amp-amp-vim-airline-themes"><a href="#vim-airline-amp-amp-vim-airline-themes" class="headerlink" title="vim-airline &amp;&amp;  vim-airline-themes"></a><a href="https://github.com/vim-airline/vim-airline" target="_blank" rel="noopener">vim-airline</a> &amp;&amp;  <a href="https://github.com/vim-airline/vim-airline-themes" target="_blank" rel="noopener">vim-airline-themes</a></h3><p>vim 状态栏显示增强插件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 vundle 安装</span></span><br><span class="line">Plugin <span class="string">'vim-airline/vim-airline'</span></span><br><span class="line">Plugin <span class="string">'vim-airline/vim-airline-themes'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">" 在 vimrc 中配置使用</span></span><br><span class="line"><span class="string">let g:airline_theme='molokai'</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span> 如果安装了 powerline,可以优化显示</span><br><span class="line"><span class="built_in">let</span> g:airline_powerline_fonts = 1</span><br></pre></td></tr></table></figure>
+<h1 id="编程开发"><a href="#编程开发" class="headerlink" title="编程开发"></a>编程开发</h1><h2 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h2><p>需添加<a href="https://webtatic.com/projects/yum-repository/" target="_blank" rel="noopener">Webtatic 源</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">yum install php72w-fpm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启 php-fpm 进程</span></span><br><span class="line">systemctl start php-fpm.service</span><br><span class="line"><span class="comment"># 自启动</span></span><br><span class="line">systemctl <span class="built_in">enable</span> php-fpm.service</span><br></pre></td></tr></table></figure>
+<h2 id="Golang"><a href="#Golang" class="headerlink" title="Golang"></a>Golang</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">yum install -y golang</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 go get 安装包一般会失败(有墙)</span></span><br><span class="line"><span class="comment"># 解决方法如下</span></span><br><span class="line"><span class="comment"># 可使用命令 go env 查看 GOPATH</span></span><br><span class="line">mkdir -p <span class="variable">$GOPATH</span>/src/golang.org/x/</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$GOPATH</span>/src/golang.org/x/</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/golang/net.git net </span><br><span class="line">go install net</span><br></pre></td></tr></table></figure>
+<p><a href="https://golang.org/" target="_blank" rel="noopener">Golang 官方网站</a></p>
+<h2 id="Python-3"><a href="#Python-3" class="headerlink" title="Python 3.*"></a>Python 3.*</h2><p>CentOS7 内置了 Python 2.7.5,如果你不是拿它作为研究或开发语言的话,此版本够用.如果想要安装 3 以上版本,那就需要从<a href="https://www.python.org/downloads/" target="_blank" rel="noopener">Python官网</a>手动下载编译了.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python 编译基础软件安装</span></span><br><span class="line"> yum install zlib-devel bzip2-devel openssl-devel ncurese-devel</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载最新的 3.6.1</span></span><br><span class="line">wget https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压</span></span><br><span class="line">tar -zxvf Python-3.6.1.tgz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编译</span></span><br><span class="line"><span class="built_in">cd</span> Python-3.6.1</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/python3</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建 Python, pip 软连接</span></span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/python3/bin/python3.6 /usr/<span class="built_in">local</span>/bin/python3</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/python3/bin/pip3.6 /usr/<span class="built_in">local</span>/bin/pip3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看版本</span></span><br><span class="line">python3 --version</span><br></pre></td></tr></table></figure>
+<h2 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h2><p>添加 yum 源,新增文件 <code>/etc/yum.repos.d/mongodb-org-3.6.repo</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mongodb-org-3.6]</span><br><span class="line">name=MongoDB Repository</span><br><span class="line">baseurl=https://repo.mongodb.org/yum/redhat/<span class="variable">$releasever</span>/mongodb-org/3.6/x86_64/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://www.mongodb.org/static/pgp/server-3.6.asc</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装</span></span><br><span class="line">yum install -y mongodb-org</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line">systemctl start mongod.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止</span></span><br><span class="line">systemctl stop mongod.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启</span></span><br><span class="line">systemctl restart mongod.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开机启动</span></span><br><span class="line">systemctl <span class="built_in">enable</span> mongod.service</span><br></pre></td></tr></table></figure>
+<p><strong>更多参考</strong></p>
+<ul>
+<li><a href="https://docs.mongodb.com/master/tutorial/install-mongodb-on-red-hat/" target="_blank" rel="noopener">MongoDB官方安装使用文档</a></li>
+<li><a href="/2017/05/07/mongodb-note/" title="MongoDB 使用笔记">MongoDB 使用笔记</a>
+</li>
+</ul>
+<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 直接 yum 安装</span></span><br><span class="line">yum install -y redis</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line">systemctl start redis.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止</span></span><br><span class="line">systemctl stop redis.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启</span></span><br><span class="line">systemctl restart redis.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开机自启动</span></span><br><span class="line">systemctl <span class="built_in">enable</span> redis.service</span><br></pre></td></tr></table></figure>
+<a href="/2017/03/11/redis-configuration/" title="Redis 配置">Redis 配置</a>
+<h2 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开机启动</span></span><br><span class="line">systemctl <span class="built_in">enable</span> nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line">systemctl start nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改配置文件</span></span><br><span class="line">vim /etc/nginx/nginx.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询是否开启80端口则</span></span><br><span class="line">firewall-cmd --query-port=80/tcp</span><br><span class="line"><span class="comment"># 开启80端口</span></span><br><span class="line">firewall-cmd --add-port=80/tcp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># SELinux 设置</span></span><br><span class="line"><span class="comment"># 查看 SELinux 模式</span></span><br><span class="line">getenforce</span><br><span class="line"><span class="comment"># 查看 SELinux 状态与模式等</span></span><br><span class="line">sestatus</span><br><span class="line"><span class="comment"># 关闭 SELinux</span></span><br><span class="line">vim /etc/selinux/config</span><br><span class="line">SELINUX=disabled</span><br><span class="line"><span class="comment"># 查看 nginx 是否受限制</span></span><br><span class="line">ps -eZ | grep nginx</span><br><span class="line"><span class="comment"># 查看文件受限</span></span><br><span class="line">ll -Zd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 nginx 打开最大文件数等</span></span><br><span class="line">cat /proc/$(cat /run/nginx.pid)/limits</span><br></pre></td></tr></table></figure>
+<h2 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加官方yum源</span></span><br><span class="line">rpm -Uvh https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装官方源后，默认启用最新版本的 mysql 子库，目前 mysql5.7</span></span><br><span class="line"><span class="comment"># 查看所有 mysql 子库</span></span><br><span class="line">yum repolist all | grep mysql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果想要安装其他版本，要关闭不需要的子库并开启版本的子库，比如安装 mysql5.6</span></span><br><span class="line"><span class="comment"># 关闭5.7版本的子库</span></span><br><span class="line">yum-config-manager --<span class="built_in">disable</span> mysql57-community</span><br><span class="line"><span class="comment"># 开启5.6版本的子库</span></span><br><span class="line">yum-config-manager --<span class="built_in">enable</span> mysql56-community</span><br><span class="line"><span class="comment"># 如果没有 yum-config-manager 命令,需要安装</span></span><br><span class="line">yum -y install yum-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 mysql5.6</span></span><br><span class="line">yum install mysql-community-server</span><br><span class="line"><span class="comment"># 开启自动启动</span></span><br><span class="line">systemctl <span class="built_in">enable</span> mysqld.service</span><br><span class="line"><span class="comment"># 开启 mysql 服务</span></span><br><span class="line">systemctl start mysqld.service</span><br><span class="line"><span class="comment"># 查看 mysql 运行状态</span></span><br><span class="line">systemctl status mysqld.service</span><br><span class="line"><span class="comment"># 设置 mysql(仅限5.6版本)密码</span></span><br><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure>
+<p><a href="https://dev.mysql.com/doc/mysql-yum-repo-quick-guide/en/" target="_blank" rel="noopener">参考官方 yum 安装指南</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Gavin 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Gavin 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/centos/" rel="tag"># centos</a>
+          
+            <a href="/tags/zsh/" rel="tag"># zsh</a>
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/07/mongodb-note/" rel="next" title="MongoDB 使用笔记">
+                <i class="fa fa-chevron-left"></i> MongoDB 使用笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/03/date-feeling/" rel="prev" title="相亲有感">
+                相亲有感 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/portrait.jpg" alt="Gavin">
+            
+              <p class="site-author-name" itemprop="name">Gavin</p>
+              <p class="site-description motion-element" itemprop="description">宁愿小众,不愿平庸</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">73</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">114</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://github.com/gavin66" title="GitHub &rarr; https://github.com/gavin66" rel="noopener" target="_blank">GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.v2ex.com/member/ksaa0096329" title="V2EX &rarr; https://www.v2ex.com/member/ksaa0096329" rel="noopener" target="_blank">V2EX</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://segmentfault.com/u/gavin66" title="SegmentFault &rarr; https://segmentfault.com/u/gavin66" rel="noopener" target="_blank">SegmentFault</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="http://weibo.com/lanbert" title="微博 &rarr; http://weibo.com/lanbert" rel="noopener" target="_blank">微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.zhihu.com/people/Gavin23" title="知乎 &rarr; https://www.zhihu.com/people/Gavin23" rel="noopener" target="_blank">知乎</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.douban.com/people/imgavin66" title="豆瓣 &rarr; https://www.douban.com/people/imgavin66" rel="noopener" target="_blank">豆瓣</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#系统设置"><span class="nav-number">1.</span> <span class="nav-text">系统设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#系统信息查询"><span class="nav-number">1.1.</span> <span class="nav-text">系统信息查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内核"><span class="nav-number">1.2.</span> <span class="nav-text">内核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置静态-IP"><span class="nav-number">1.3.</span> <span class="nav-text">配置静态 IP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改主机名称"><span class="nav-number">1.4.</span> <span class="nav-text">修改主机名称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改中文字符集"><span class="nav-number">1.5.</span> <span class="nav-text">修改中文字符集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YUM"><span class="nav-number">1.6.</span> <span class="nav-text">YUM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#效率工具"><span class="nav-number">2.</span> <span class="nav-text">效率工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#gpm"><span class="nav-number">2.1.</span> <span class="nav-text">gpm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#w3m"><span class="nav-number">2.2.</span> <span class="nav-text">w3m</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Zsh"><span class="nav-number">2.3.</span> <span class="nav-text">Zsh</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#oh-my-zsh"><span class="nav-number">2.3.1.</span> <span class="nav-text">oh-my-zsh</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bullet-train-zsh"><span class="nav-number">2.4.</span> <span class="nav-text">bullet-train.zsh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#powerline"><span class="nav-number">2.5.</span> <span class="nav-text">powerline</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Vundle-vim"><span class="nav-number">2.5.1.</span> <span class="nav-text">Vundle.vim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vim-airline-amp-amp-vim-airline-themes"><span class="nav-number">2.5.2.</span> <span class="nav-text">vim-airline &amp;&amp;  vim-airline-themes</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编程开发"><span class="nav-number">3.</span> <span class="nav-text">编程开发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP"><span class="nav-number">3.1.</span> <span class="nav-text">PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Golang"><span class="nav-number">3.2.</span> <span class="nav-text">Golang</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-3"><span class="nav-number">3.3.</span> <span class="nav-text">Python 3.*</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MongoDB"><span class="nav-number">3.4.</span> <span class="nav-text">MongoDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">3.5.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx"><span class="nav-number">3.6.</span> <span class="nav-text">Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">3.7.</span> <span class="nav-text">MySQL</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gavin</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.6.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz",
+                'X-LC-Key': "ygD46J8JRaC0GkifemEHlXCf",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script src="/js/src/js.cookie.js?v=6.6.0"></script>
+  <script src="/js/src/scroll-cookie.js?v=6.6.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

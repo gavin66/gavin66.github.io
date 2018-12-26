@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="包管理工具 - Brew 安装 1ruby -e &quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)&quot;  自检 1brew doctor">
+<meta name="keywords" content="mac,软件,app">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac常用软件安装">
+<meta property="og:url" content="http://blog.imgavin.me/2016/03/23/mac-install-app/index.html">
+<meta property="og:site_name" content="Gavin&#39;s Blog">
+<meta property="og:description" content="包管理工具 - Brew 安装 1ruby -e &quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)&quot;  自检 1brew doctor">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-05-03T02:47:59.019Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mac常用软件安装">
+<meta name="twitter:description" content="包管理工具 - Brew 安装 1ruby -e &quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)&quot;  自检 1brew doctor">
+
+
+
+
+
+
+  <link rel="canonical" href="http://blog.imgavin.me/2016/03/23/mac-install-app/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Mac常用软件安装 | Gavin's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gavin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">宁愿小众,不愿平庸</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">主页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-技术">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-tech/" rel="section">技术</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-生活">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-life/" rel="section">生活</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+
+    
+
+    <a href="/about" rel="section">关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.imgavin.me/2016/03/23/mac-install-app/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin">
+      <meta itemprop="description" content="宁愿小众,不愿平庸">
+      <meta itemprop="image" content="/uploads/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Mac常用软件安装
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-03-23 12:32:25" itemprop="dateCreated datePublished" datetime="2016-03-23T12:32:25+08:00">2016-03-23</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/03/23/mac-install-app/" class="leancloud_visitors" data-flag-title="Mac常用软件安装">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="包管理工具-Brew"><a href="#包管理工具-Brew" class="headerlink" title="包管理工具 - Brew"></a>包管理工具 - <a href="https://github.com/Homebrew/homebrew" target="_blank" rel="noopener">Brew</a></h2><ul>
+<li><p>安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e <span class="string">"<span class="variable">$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)</span>"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自检</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew doctor</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li>常用命令<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 更新brew可安装包</span></span><br><span class="line">brew update</span><br><span class="line"><span class="comment"># 搜索php7.0</span></span><br><span class="line">brew search php70</span><br><span class="line"><span class="comment"># 添加扩展库&lt;gihhub_user/repo&gt;   </span></span><br><span class="line">brew tap josegonzalez/php</span><br><span class="line"><span class="comment"># 查看安装的扩展列表</span></span><br><span class="line">brew tap</span><br><span class="line"><span class="comment"># 安装php7.0</span></span><br><span class="line">brew install php70</span><br><span class="line"><span class="comment"># 卸载php7.0</span></span><br><span class="line">brew remove  php70</span><br><span class="line"><span class="comment"># 查看哪些包可以更新</span></span><br><span class="line">brew outdated</span><br><span class="line"><span class="comment"># 升级php7.0</span></span><br><span class="line">brew upgrade php70</span><br><span class="line"><span class="comment"># 升级所有已安装包</span></span><br><span class="line">brew upgrade</span><br><span class="line"><span class="comment"># 清理所有包的旧版本</span></span><br><span class="line">brew cleanup</span><br><span class="line"><span class="comment"># 清理php70旧版本</span></span><br><span class="line">brew cleanup php70</span><br><span class="line"><span class="comment"># 查看可清理的旧版本包，不执行实际操作</span></span><br><span class="line">brew cleanup -n</span><br><span class="line"><span class="comment"># 查看php7.0安装选项</span></span><br><span class="line">brew options php70</span><br><span class="line"><span class="comment"># 查看php7.0相关信息</span></span><br><span class="line">brew info    php70</span><br><span class="line"><span class="comment"># 访问php7.0官方网站</span></span><br><span class="line">brew home    php70</span><br><span class="line"><span class="comment"># 锁定php70包,brew update 不再对它更新</span></span><br><span class="line">brew pin php70</span><br><span class="line"><span class="comment"># 取消锁定</span></span><br><span class="line">brew unpin php70</span><br><span class="line"><span class="comment"># 查看系统通过 brew 安装的服务</span></span><br><span class="line">brew services list</span><br><span class="line"><span class="comment"># 清除已卸载无用的启动配置文件</span></span><br><span class="line">brew services cleanup</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="软件安装工具-比官方商店全且新-homebrew-cask"><a href="#软件安装工具-比官方商店全且新-homebrew-cask" class="headerlink" title="软件安装工具,比官方商店全且新 -  homebrew-cask"></a>软件安装工具,比官方商店全且新 -  <a href="https://github.com/caskroom/homebrew-cask" target="_blank" rel="noopener">homebrew-cask</a></h2><ul>
+<li><p>安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install brew-cask</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>常用命令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">brew cask search        <span class="comment">#列出所有可以被安装的软件</span></span><br><span class="line">brew cask search php    <span class="comment">#查找所有和php相关的应用</span></span><br><span class="line">brew cask list          <span class="comment">#列出所有通过cask安装的软件</span></span><br><span class="line">brew cask info phpstorm <span class="comment">#查看 phpstorm 的信息</span></span><br><span class="line">brew cask uninstall phostorm  <span class="comment">#卸载 phpstorm</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="命令行工具-iTerm2"><a href="#命令行工具-iTerm2" class="headerlink" title="命令行工具 - iTerm2"></a>命令行工具 - <a href="https://github.com/gnachman/iTerm2" target="_blank" rel="noopener">iTerm2</a></h2><ul>
+<li>安装<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew cask install iterm2</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="使用zsh-shell-zsh"><a href="#使用zsh-shell-zsh" class="headerlink" title="使用zsh shell -  zsh"></a>使用zsh shell -  <a href="https://zh.wikipedia.org/zh/Z_shell" target="_blank" rel="noopener">zsh</a></h2><ul>
+<li>安装：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install zsh</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="开源的zsh配置项目-Oh-My-Zsh"><a href="#开源的zsh配置项目-Oh-My-Zsh" class="headerlink" title="开源的zsh配置项目 - Oh My Zsh"></a>开源的zsh配置项目 - <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">Oh My Zsh</a></h2><ul>
+<li><p>安装</p>
+<ul>
+<li><p>通过curl</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过wget</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>配置</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.zshrc</span><br><span class="line"></span><br><span class="line"><span class="comment">#ZSH_THEME="robbysussell" // 大概第8行左右</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a><a href="https://www.postgresql.org/" target="_blank" rel="noopener">PostgreSQL</a></h2><ul>
+<li><p>安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install postgresql</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置开机启动</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ln -sfv /usr/<span class="built_in">local</span>/Cellar/postgresql/10.1/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents</span><br><span class="line">launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>基本操作</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建用户，username为用户名，需输入两次密码</span></span><br><span class="line">createuser username -p</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建库，库名为 dbname,所有者为 username，数据库编码为 utf8 </span></span><br><span class="line">createdb dbname -O username -E UTF8 -e</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接到数据库</span></span><br><span class="line">psql -U username -d dbname -h 127.0.0.1</span><br><span class="line"><span class="comment"># 数据库列表</span></span><br><span class="line">\l</span><br><span class="line"><span class="comment"># 连接其他数据库</span></span><br><span class="line">\c dbname</span><br><span class="line"><span class="comment"># 显示数据库表</span></span><br><span class="line">\d</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="PostgreSQL-插件-multicorn-pg-es-fdw"><a href="#PostgreSQL-插件-multicorn-pg-es-fdw" class="headerlink" title="PostgreSQL 插件 multicorn, pg-es-fdw"></a>PostgreSQL 插件 multicorn, pg-es-fdw</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git://github.com/Kozea/Multicorn.git</span><br><span class="line"><span class="built_in">cd</span> Multicorn</span><br><span class="line"></span><br><span class="line"><span class="comment"># MacOS 环境需修改</span></span><br><span class="line"><span class="comment"># 修改文件 Makefile 93行，将 darwin 改为 Darwin</span></span><br><span class="line"><span class="comment"># 执行 make</span></span><br><span class="line"><span class="comment"># sudo ARCHFLAGS="-arch x86_64" make install</span></span><br><span class="line"><span class="comment"># make install</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pg 数据库中新建扩展,需要使用超级用户权限</span></span><br><span class="line">psql -U username -d dbname -p port -h ip</span><br><span class="line">create extension multicorn;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 pg-es-fdw</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/gavin66/pg-es-fdw.git</span><br><span class="line">python setup.py install</span><br><span class="line"><span class="comment"># 基于multicorn创建es foreign server</span></span><br><span class="line">CREATE SERVER multicorn_es FOREIGN DATA WRAPPER multicorn</span><br><span class="line">OPTIONS (</span><br><span class="line">  wrapper <span class="string">'dite.ElasticsearchFDW'</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>可参考，<a href="https://yq.aliyun.com/articles/56824" target="_blank" rel="noopener">PostgreSQL内核扩展之 - ElasticSearch同步插件</a></p>
+<h2 id="Elasticsearch"><a href="#Elasticsearch" class="headerlink" title="Elasticsearch"></a><a href="https://www.elastic.co/cn/" target="_blank" rel="noopener">Elasticsearch</a></h2><ul>
+<li><p>安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install elasticsearch</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置开机启动</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ln -sfv /usr/<span class="built_in">local</span>/Cellar/elasticsearch/6.0.0_1/homebrew.mxcl.elasticsearch.plist ~/Library/LaunchAgents</span><br><span class="line">launchctl load ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Golang"><a href="#Golang" class="headerlink" title="Golang"></a>Golang</h2><ul>
+<li><p>安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install go</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Gavin 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Gavin 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mac/" rel="tag"># mac</a>
+          
+            <a href="/tags/软件/" rel="tag"># 软件</a>
+          
+            <a href="/tags/app/" rel="tag"># app</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/23/linux-shell-status/" rel="next" title="为命令行和vim配置一个美观的状态提示栏">
+                <i class="fa fa-chevron-left"></i> 为命令行和vim配置一个美观的状态提示栏
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/28/my-open-jquery-tagger/" rel="prev" title="我的开源项目 - 基于 jQuery 开发的标签生成器插件">
+                我的开源项目 - 基于 jQuery 开发的标签生成器插件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/portrait.jpg" alt="Gavin">
+            
+              <p class="site-author-name" itemprop="name">Gavin</p>
+              <p class="site-description motion-element" itemprop="description">宁愿小众,不愿平庸</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">73</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">114</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://github.com/gavin66" title="GitHub &rarr; https://github.com/gavin66" rel="noopener" target="_blank">GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.v2ex.com/member/ksaa0096329" title="V2EX &rarr; https://www.v2ex.com/member/ksaa0096329" rel="noopener" target="_blank">V2EX</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://segmentfault.com/u/gavin66" title="SegmentFault &rarr; https://segmentfault.com/u/gavin66" rel="noopener" target="_blank">SegmentFault</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="http://weibo.com/lanbert" title="微博 &rarr; http://weibo.com/lanbert" rel="noopener" target="_blank">微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.zhihu.com/people/Gavin23" title="知乎 &rarr; https://www.zhihu.com/people/Gavin23" rel="noopener" target="_blank">知乎</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.douban.com/people/imgavin66" title="豆瓣 &rarr; https://www.douban.com/people/imgavin66" rel="noopener" target="_blank">豆瓣</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#包管理工具-Brew"><span class="nav-number">1.</span> <span class="nav-text">包管理工具 - Brew</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件安装工具-比官方商店全且新-homebrew-cask"><span class="nav-number">2.</span> <span class="nav-text">软件安装工具,比官方商店全且新 -  homebrew-cask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行工具-iTerm2"><span class="nav-number">3.</span> <span class="nav-text">命令行工具 - iTerm2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用zsh-shell-zsh"><span class="nav-number">4.</span> <span class="nav-text">使用zsh shell -  zsh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开源的zsh配置项目-Oh-My-Zsh"><span class="nav-number">5.</span> <span class="nav-text">开源的zsh配置项目 - Oh My Zsh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PostgreSQL"><span class="nav-number">6.</span> <span class="nav-text">PostgreSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PostgreSQL-插件-multicorn-pg-es-fdw"><span class="nav-number">7.</span> <span class="nav-text">PostgreSQL 插件 multicorn, pg-es-fdw</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Elasticsearch"><span class="nav-number">8.</span> <span class="nav-text">Elasticsearch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Golang"><span class="nav-number">9.</span> <span class="nav-text">Golang</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gavin</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.6.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz",
+                'X-LC-Key': "ygD46J8JRaC0GkifemEHlXCf",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script src="/js/src/js.cookie.js?v=6.6.0"></script>
+  <script src="/js/src/scroll-cookie.js?v=6.6.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

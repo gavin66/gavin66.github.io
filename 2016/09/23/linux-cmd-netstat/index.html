@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="netstat命令用于显示与IP、TCP、UDP和ICMP协议相关的统计数据，一般用于检验本机各端口的网络连接情况。netstat是在内核中访问网络及相关信息的程序，它能提供TCP连接，TCP和UDP监听，进程内存管理的相关报告。">
+<meta name="keywords" content="Linux,cmd,netstat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令 - netstat">
+<meta property="og:url" content="http://blog.imgavin.me/2016/09/23/linux-cmd-netstat/index.html">
+<meta property="og:site_name" content="Gavin&#39;s Blog">
+<meta property="og:description" content="netstat命令用于显示与IP、TCP、UDP和ICMP协议相关的统计数据，一般用于检验本机各端口的网络连接情况。netstat是在内核中访问网络及相关信息的程序，它能提供TCP连接，TCP和UDP监听，进程内存管理的相关报告。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-11-19T03:30:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令 - netstat">
+<meta name="twitter:description" content="netstat命令用于显示与IP、TCP、UDP和ICMP协议相关的统计数据，一般用于检验本机各端口的网络连接情况。netstat是在内核中访问网络及相关信息的程序，它能提供TCP连接，TCP和UDP监听，进程内存管理的相关报告。">
+
+
+
+
+
+
+  <link rel="canonical" href="http://blog.imgavin.me/2016/09/23/linux-cmd-netstat/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Linux 命令 - netstat | Gavin's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gavin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">宁愿小众,不愿平庸</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">主页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-技术">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-tech/" rel="section">技术</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-生活">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-life/" rel="section">生活</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+
+    
+
+    <a href="/about" rel="section">关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.imgavin.me/2016/09/23/linux-cmd-netstat/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin">
+      <meta itemprop="description" content="宁愿小众,不愿平庸">
+      <meta itemprop="image" content="/uploads/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 命令 - netstat
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-09-23 16:08:32" itemprop="dateCreated datePublished" datetime="2016-09-23T16:08:32+08:00">2016-09-23</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/09/23/linux-cmd-netstat/" class="leancloud_visitors" data-flag-title="Linux 命令 - netstat">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>netstat命令用于显示与IP、TCP、UDP和ICMP协议相关的统计数据，一般用于检验本机各端口的网络连接情况。netstat是在内核中访问网络及相关信息的程序，它能提供TCP连接，TCP和UDP监听，进程内存管理的相关报告。</p>
+<a id="more"></a>
+<h1 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">-a,–all 显示所有连线中的Socket。</span><br><span class="line">-A&lt;网络类型&gt;或–&lt;网络类型&gt; 列出该网络类型连线中的相关地址。</span><br><span class="line">-c,–continuous 持续列出网络状态。</span><br><span class="line">-C,–cache 显示路由器配置的快取信息。</span><br><span class="line">-e,–extend 显示网络其他相关信息。</span><br><span class="line">-F,–fib 显示FIB。</span><br><span class="line">-g,–groups 显示多重广播功能群组组员名单。</span><br><span class="line">-h,–<span class="built_in">help</span> 在线帮助。</span><br><span class="line">-i,–interfaces 显示网络界面信息表单。</span><br><span class="line">-l,–listening 显示监控中的服务器的Socket。</span><br><span class="line">-M,–masquerade 显示伪装的网络连线。</span><br><span class="line">-n,–numeric 直接使用IP地址，而不通过域名服务器。</span><br><span class="line">-N,–netlink或–symbolic 显示网络硬件外围设备的符号连接名称。</span><br><span class="line">-o,–timers 显示计时器。</span><br><span class="line">-p,–programs 显示正在使用Socket的程序识别码和程序名称。</span><br><span class="line">-r,–route 显示Routing Table。</span><br><span class="line">-s,–statistice 显示网络工作信息统计表。</span><br><span class="line">-t,–tcp 显示TCP传输协议的连线状况。</span><br><span class="line">-u,–udp 显示UDP传输协议的连线状况。</span><br><span class="line">-v,–verbose 显示指令执行过程。</span><br><span class="line">-V,–version 显示版本信息。</span><br><span class="line">-w,–raw 显示RAW传输协议的连线状况。</span><br><span class="line">-x,–unix 此参数的效果和指定”-A unix”参数相同。</span><br><span class="line">–ip,–inet 此参数的效果和指定”-A inet”参数相同。</span><br></pre></td></tr></table></figure>
+<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><ol>
+<li><p>列出所有端口</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]<span class="comment"># netstat</span></span><br><span class="line">Active Internet connections (w/o servers)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State</span><br><span class="line">tcp        0      0 10.141.106.118:35672    10.53.192.14:nsesrvr    ESTABLISHED</span><br><span class="line">tcp        0     36 10.141.106.118:ssh      43.246.231.98:4236      ESTABLISHED</span><br><span class="line">Active UNIX domain sockets (w/o servers)</span><br><span class="line">Proto RefCnt Flags       Type       State         I-Node   Path</span><br><span class="line">unix  2      [ ]         DGRAM                    9480     /run/systemd/shutdownd</span><br><span class="line">unix  2      [ ]         DGRAM                    6637     /run/systemd/notify</span><br><span class="line">unix  5      [ ]         DGRAM                    6648     /run/systemd/journal/socket</span><br><span class="line">unix  7      [ ]         DGRAM                    6650     /dev/<span class="built_in">log</span></span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     11556    /run/systemd/journal/stdout</span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     11433</span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     14970</span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     11434    /var/run/dbus/system_bus_socket</span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     11601</span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     12738</span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     30650062 /usr/<span class="built_in">local</span>/sa/agent/secubase/secu-tcs-agent.unix</span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     30650049</span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     10414</span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     11599</span><br><span class="line">unix  2      [ ]         DGRAM                    46950561</span><br></pre></td></tr></table></figure>
+<p><strong>说明：</strong></p>
+<p>从整体上看，netstat的输出结果可以分为两个部分：</p>
+<p>一个是Active Internet connections，称为有源TCP连接，其中”Recv-Q”和”Send-Q”指的是接收队列和发送队列。这些数字一般都应该是0。如果不是则表示软件包正在队列中堆积。这种情况只能在非常少的情况见到。</p>
+<p>另一个是Active UNIX domain sockets，称为有源Unix域套接口(和网络套接字一样，但是只能用于本机通信，性能可以提高一倍)。</p>
+<p>Proto显示连接使用的协议,RefCnt表示连接到本套接口上的进程号,Types显示套接口的类型,State显示套接口当前的状态,Path表示连接到套接口的其它进程使用的路径名。</p>
+<p>套接口类型：</p>
+<p>-t ：TCP</p>
+<p>-u ：UDP</p>
+<p>-raw ：RAW类型</p>
+<p>–unix ：UNIX域类型</p>
+<p>–ax25 ：AX25类型</p>
+<p>–ipx ：ipx类型</p>
+<p>–netrom ：netrom类型</p>
+<p>状态说明：</p>
+<p>LISTEN：侦听来自远方的TCP端口的连接请求</p>
+<p>SYN-SENT：再发送连接请求后等待匹配的连接请求（如果有大量这样的状态包，检查是否中招了）</p>
+<p>SYN-RECEIVED：再收到和发送一个连接请求后等待对方对连接请求的确认（如有大量此状态，估计被flood攻击了）</p>
+<p>ESTABLISHED：代表一个打开的连接</p>
+<p>FIN-WAIT-1：等待远程TCP连接中断请求，或先前的连接中断请求的确认</p>
+<p>FIN-WAIT-2：从远程TCP等待连接中断请求</p>
+<p>CLOSE-WAIT：等待从本地用户发来的连接中断请求</p>
+<p>CLOSING：等待远程TCP对连接中断的确认</p>
+<p>LAST-ACK：等待原来的发向远程TCP的连接中断请求的确认（不是什么好东西，此项出现，检查是否被攻击）</p>
+<p>TIME-WAIT：等待足够的时间以确保远程TCP接收到连接中断请求的确认</p>
+<p>CLOSED：没有任何连接状态</p>
+</li>
+<li><p>列出所有端口</p>
+<p>显示一个所有的有效连接信息列表，包括已建立的连接（ESTABLISHED），也包括监听连接请（LISTENING）的那些连接。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -a</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示当前UDP连接状况</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -nu</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示UDP端口号的使用情况</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -apu</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示网卡列表</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]<span class="comment"># netstat -i</span></span><br><span class="line">Kernel Interface table</span><br><span class="line">Iface      MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg</span><br><span class="line">eth0      1500 14278730      0      0 0      15305264      0      0      0 BMRU</span><br><span class="line">lo       65536  3970328      0      0 0       3970328      0      0      0 LRU</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示组播组的关系</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]<span class="comment"># netstat -g</span></span><br><span class="line">IPv6/IPv4 Group Memberships</span><br><span class="line">Interface       RefCnt Group</span><br><span class="line">--------------- ------ ---------------------</span><br><span class="line">lo              1      all-systems.mcast.net</span><br><span class="line">eth0            1      all-systems.mcast.net</span><br><span class="line">lo              1      ff02::1</span><br><span class="line">lo              1      ff01::1</span><br><span class="line">eth0            1      ff02::1</span><br><span class="line">eth0            1      ff01::1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示网络统计信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]<span class="comment"># netstat -s</span></span><br><span class="line">Ip:</span><br><span class="line">    18230955 total packets received</span><br><span class="line">    0 forwarded</span><br><span class="line">    0 incoming packets discarded</span><br><span class="line">    18230921 incoming packets delivered</span><br><span class="line">    19257576 requests sent out</span><br><span class="line">    32 dropped because of missing route</span><br><span class="line">Icmp:</span><br><span class="line">    3939074 ICMP messages received</span><br><span class="line">    725 input ICMP message failed.</span><br><span class="line">    ICMP input histogram:</span><br><span class="line">        destination unreachable: 1873</span><br><span class="line">        timeout <span class="keyword">in</span> transit: 128</span><br><span class="line">        <span class="built_in">source</span> quenches: 1</span><br><span class="line">        redirects: 7</span><br><span class="line">        <span class="built_in">echo</span> requests: 3937037</span><br><span class="line">        <span class="built_in">echo</span> replies: 21</span><br><span class="line">        timestamp request: 7</span><br><span class="line">    3937047 ICMP messages sent</span><br><span class="line">    0 ICMP messages failed</span><br><span class="line">    ICMP output histogram:</span><br><span class="line">        destination unreachable: 3</span><br><span class="line">        <span class="built_in">echo</span> replies: 3937037</span><br><span class="line">        timestamp replies: 7</span><br><span class="line">IcmpMsg:</span><br><span class="line">        InType0: 21</span><br><span class="line">        InType3: 1873</span><br><span class="line">        InType4: 1</span><br><span class="line">        InType5: 7</span><br><span class="line">        InType8: 3937037</span><br><span class="line">        InType11: 128</span><br><span class="line">        InType13: 7</span><br><span class="line">        OutType0: 3937037</span><br><span class="line">        OutType3: 3</span><br><span class="line">        OutType14: 7</span><br><span class="line">Tcp:</span><br><span class="line">    491022 active connections openings</span><br><span class="line">    280992 passive connection openings</span><br><span class="line">    15791 failed connection attempts</span><br><span class="line">    9298 connection resets received</span><br><span class="line">    2 connections established</span><br><span class="line">    14196585 segments received</span><br><span class="line">    14955509 segments send out</span><br><span class="line">    978282 segments retransmited</span><br><span class="line">    8 bad segments received.</span><br><span class="line">    334348 resets sent</span><br><span class="line">    InCsumErrors: 5</span><br><span class="line">Udp:</span><br><span class="line">    95248 packets received</span><br><span class="line">    3 packets to unknown port received.</span><br><span class="line">    0 packet receive errors</span><br><span class="line">    97603 packets sent</span><br><span class="line">    0 receive buffer errors</span><br><span class="line">    0 send buffer errors</span><br><span class="line">UdpLite:</span><br><span class="line">TcpExt:</span><br><span class="line">    28519 SYN cookies sent</span><br><span class="line">    14620 SYN cookies received</span><br><span class="line">    11638 invalid SYN cookies received</span><br><span class="line">    12321 resets received <span class="keyword">for</span> embryonic SYN_RECV sockets</span><br><span class="line">    33 packets pruned from receive queue because of socket buffer overrun</span><br><span class="line">    129 ICMP packets dropped because they were out-of-window</span><br><span class="line">    373243 TCP sockets finished time <span class="built_in">wait</span> <span class="keyword">in</span> fast timer</span><br><span class="line">    330 packets rejects <span class="keyword">in</span> established connections because of timestamp</span><br><span class="line">    134870 delayed acks sent</span><br><span class="line">    2181 delayed acks further delayed because of locked socket</span><br><span class="line">    Quick ack mode was activated 61222 <span class="built_in">times</span></span><br><span class="line">    1381 <span class="built_in">times</span> the listen queue of a socket overflowed</span><br><span class="line">    30252 SYNs to LISTEN sockets dropped</span><br><span class="line">    15566 packets directly queued to recvmsg prequeue.</span><br><span class="line">    50643 bytes directly received <span class="keyword">in</span> process context from prequeue</span><br><span class="line">    3129297 packet headers predicted</span><br><span class="line">    56 packets header predicted and directly queued to user</span><br><span class="line">    1931257 acknowledgments not containing data payload received</span><br><span class="line">    3003717 predicted acknowledgments</span><br><span class="line">    21 <span class="built_in">times</span> recovered from packet loss due to fast retransmit</span><br><span class="line">    4215 <span class="built_in">times</span> recovered from packet loss by selective acknowledgements</span><br><span class="line">    Detected reordering 8 <span class="built_in">times</span> using FACK</span><br><span class="line">    Detected reordering 7 <span class="built_in">times</span> using SACK</span><br><span class="line">    Detected reordering 42 <span class="built_in">times</span> using time stamp</span><br><span class="line">    30 congestion windows fully recovered without slow start</span><br><span class="line">    39 congestion windows partially recovered using Hoe heuristic</span><br><span class="line">    201 congestion windows recovered without slow start by DSACK</span><br><span class="line">    16653 congestion windows recovered without slow start after partial ack</span><br><span class="line">    TCPLostRetransmit: 6</span><br><span class="line">    9 timeouts after reno fast retransmit</span><br><span class="line">    14486 timeouts after SACK recovery</span><br><span class="line">    840 timeouts <span class="keyword">in</span> loss state</span><br><span class="line">    6834 fast retransmits</span><br><span class="line">    600 forward retransmits</span><br><span class="line">    5817 retransmits <span class="keyword">in</span> slow start</span><br><span class="line">    754545 other TCP timeouts</span><br><span class="line">    TCPLossProbes: 186417</span><br><span class="line">    TCPLossProbeRecovery: 34172</span><br><span class="line">    10 classic Reno fast retransmits failed</span><br><span class="line">    1292 SACK retransmits failed</span><br><span class="line">    1118 packets collapsed <span class="keyword">in</span> receive queue due to low socket buffer</span><br><span class="line">    61428 DSACKs sent <span class="keyword">for</span> old packets</span><br><span class="line">    5 DSACKs sent <span class="keyword">for</span> out of order packets</span><br><span class="line">    10428 DSACKs received</span><br><span class="line">    128 DSACKs <span class="keyword">for</span> out of order packets received</span><br><span class="line">    65 connections reset due to unexpected data</span><br><span class="line">    52 connections reset due to early user close</span><br><span class="line">    1921 connections aborted due to timeout</span><br><span class="line">    TCPDSACKIgnoredOld: 28</span><br><span class="line">    TCPDSACKIgnoredNoUndo: 5661</span><br><span class="line">    TCPSpuriousRTOs: 329</span><br><span class="line">    TCPSackShifted: 395</span><br><span class="line">    TCPSackMerged: 655</span><br><span class="line">    TCPSackShiftFallback: 18400</span><br><span class="line">    TCPTimeWaitOverflow: 7574</span><br><span class="line">    TCPReqQFullDoCookies: 28519</span><br><span class="line">    TCPRcvCoalesce: 410308</span><br><span class="line">    TCPOFOQueue: 30205</span><br><span class="line">    TCPOFOMerge: 7</span><br><span class="line">    TCPChallengeACK: 1414</span><br><span class="line">    TCPSYNChallenge: 4635</span><br><span class="line">    TCPFastOpenCookieReqd: 10</span><br><span class="line">    TCPFromZeroWindowAdv: 1</span><br><span class="line">    TCPToZeroWindowAdv: 1</span><br><span class="line">    TCPWantZeroWindowAdv: 25</span><br><span class="line">    TCPSynRetrans: 516500</span><br><span class="line">    TCPOrigDataSent: 10068841</span><br><span class="line">    TCPHystartTrainDetect: 724</span><br><span class="line">    TCPHystartTrainCwnd: 14858</span><br><span class="line">    TCPHystartDelayDetect: 208</span><br><span class="line">    TCPHystartDelayCwnd: 8528</span><br><span class="line">    TCPACKSkippedSynRecv: 1298</span><br><span class="line">    TCPACKSkippedPAWS: 25</span><br><span class="line">    TCPACKSkippedSeq: 46</span><br><span class="line">    TCPACKSkippedChallenge: 611</span><br><span class="line">IpExt:</span><br><span class="line">    InNoRoutes: 24</span><br><span class="line">    InMcastPkts: 11</span><br><span class="line">    InOctets: 2578230037</span><br><span class="line">    OutOctets: 2801129266</span><br><span class="line">    InMcastOctets: 396</span><br><span class="line">    InNoECTPkts: 18228913</span><br><span class="line">    InECT1Pkts: 18</span><br><span class="line">    InECT0Pkts: 1956</span><br><span class="line">    InCEPkts: 68</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示监听的套接口</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]<span class="comment"># netstat -l</span></span><br><span class="line">Active Internet connections (only servers)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State</span><br><span class="line">tcp        0      0 localhost:6379          0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:http            0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN</span><br><span class="line">tcp6       0      0 [::]:ssh                [::]:*                  LISTEN</span><br><span class="line">udp        0      0 localhost:323           0.0.0.0:*</span><br><span class="line">udp6       0      0 localhost:323           [::]:*</span><br><span class="line">Active UNIX domain sockets (only servers)</span><br><span class="line">Proto RefCnt Flags       Type       State         I-Node   Path</span><br><span class="line">unix  2      [ ACC ]     STREAM     LISTENING     14972    /tmp/php-cgi.sock</span><br><span class="line">unix  2      [ ACC ]     STREAM     LISTENING     30640322 /usr/<span class="built_in">local</span>/sa/agent/secubase/secu-tcs-agent.unix</span><br><span class="line">unix  2      [ ACC ]     STREAM     LISTENING     30640323 /usr/<span class="built_in">local</span>/sa/agent/secubase/secu-tcs-agent-v5.unix</span><br><span class="line">unix  2      [ ACC ]     STREAM     LISTENING     30640324 /usr/<span class="built_in">local</span>/sa/agent/secubase/secu-tcs-agent-v5-notpl.unix</span><br><span class="line">unix  2      [ ACC ]     SEQPACKET  LISTENING     9537     /run/udev/control</span><br><span class="line">unix  2      [ ACC ]     STREAM     LISTENING     11875    /var/run/acpid.socket</span><br><span class="line">unix  2      [ ACC ]     STREAM     LISTENING     11129    /var/run/dbus/system_bus_socket</span><br><span class="line">unix  2      [ ACC ]     STREAM     LISTENING     11939    /var/run/lsm/ipc/sim</span><br><span class="line">unix  2      [ ACC ]     STREAM     LISTENING     9404     /run/systemd/private</span><br><span class="line">unix  2      [ ACC ]     STREAM     LISTENING     9412     /run/lvm/lvmpolld.socket</span><br><span class="line">unix  2      [ ACC ]     STREAM     LISTENING     9415     /run/lvm/lvmetad.socket</span><br><span class="line">unix  2      [ ACC ]     STREAM     LISTENING     11986    /var/run/lsm/ipc/simc</span><br><span class="line">unix  2      [ ACC ]     STREAM     LISTENING     6645     /run/systemd/journal/stdout</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示所有已建立的有效连接</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -n</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示关于以太网的统计数据</p>
+<p>用于显示关于以太网的统计数据。它列出的项目包括传送的数据报的总字节数、错误数、删除数、数据报的数量和广播的数量。这些统计数据既有发送的数据报数量，也有接收的数据报数量。这个选项可以用来统计一些基本的网络流量）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]<span class="comment"># netstat -e</span></span><br><span class="line">Active Internet connections (w/o servers)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       User       Inode</span><br><span class="line">tcp        0      0 10.141.106.118:35672    10.53.192.14:nsesrvr    ESTABLISHED root       45877268</span><br><span class="line">tcp        0     36 10.141.106.118:ssh      43.246.231.98:4236      ESTABLISHED root       46950480</span><br><span class="line">Active UNIX domain sockets (w/o servers)</span><br><span class="line">Proto RefCnt Flags       Type       State         I-Node   Path</span><br><span class="line">unix  2      [ ]         DGRAM                    9480     /run/systemd/shutdownd</span><br><span class="line">unix  2      [ ]         DGRAM                    6637     /run/systemd/notify</span><br><span class="line">unix  5      [ ]         DGRAM                    6648     /run/systemd/journal/socket</span><br><span class="line">unix  7      [ ]         DGRAM                    6650     /dev/<span class="built_in">log</span></span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     11556    /run/systemd/journal/stdout</span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     11433</span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     14970</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示关于路由表的信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]<span class="comment"># netstat -r</span></span><br><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface</span><br><span class="line">default         10.141.64.1     0.0.0.0         UG        0 0          0 eth0</span><br><span class="line">10.141.64.0     0.0.0.0         255.255.192.0   U         0 0          0 eth0</span><br><span class="line">link-local      0.0.0.0         255.255.0.0     U         0 0          0 eth0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出所有 tcp 端口</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]<span class="comment"># netstat -at</span></span><br><span class="line">Active Internet connections (servers and established)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State</span><br><span class="line">tcp        0      0 localhost:6379          0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:http            0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 10.141.106.118:32833    10.66.145.146:mysql     TIME_WAIT</span><br><span class="line">tcp        0      0 10.141.106.118:35672    10.53.192.14:nsesrvr    ESTABLISHED</span><br><span class="line">tcp        0      0 10.141.106.118:32831    10.66.145.146:mysql     TIME_WAIT</span><br><span class="line">tcp        0      0 10.141.106.118:32828    10.66.145.146:mysql     TIME_WAIT</span><br><span class="line">tcp        0      0 10.141.106.118:32832    10.66.145.146:mysql     TIME_WAIT</span><br><span class="line">tcp        0     36 10.141.106.118:ssh      43.246.231.98:4236      ESTABLISHED</span><br><span class="line">tcp        0      0 10.141.106.118:32830    10.66.145.146:mysql     TIME_WAIT</span><br><span class="line">tcp        0      0 10.141.106.118:32829    10.66.145.146:mysql     TIME_WAIT</span><br><span class="line">tcp6       0      0 [::]:ssh                [::]:*                  LISTEN</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>统计机器中网络连接各个状态个数</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]<span class="comment"># netstat -a | awk '/^tcp/ &#123;++S[$NF]&#125; END &#123;for(a in S) print a, S[a]&#125;'</span></span><br><span class="line">LISTEN 4</span><br><span class="line">ESTABLISHED 2</span><br><span class="line">TIME_WAIT 6</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>把状态全都取出来后使用uniq -c统计后再进行排序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]#  netstat -nat |awk &apos;&#123;print $6&#125;&apos;|sort|uniq -c|sort -rn</span><br><span class="line">      4 TIME_WAIT</span><br><span class="line">      4 LISTEN</span><br><span class="line">      2 ESTABLISHED</span><br><span class="line">      1 established)</span><br><span class="line">      1 Foreign</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找出程序运行的端口</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]<span class="comment"># netstat -ap | grep ssh</span></span><br><span class="line">tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN      713/sshd</span><br><span class="line">tcp        0     36 10.141.106.118:ssh      43.246.231.98:6918      ESTABLISHED 18793/sshd: root@pt</span><br><span class="line">tcp        0     80 10.141.106.118:ssh      a94-133-111-209.c:45314 ESTABLISHED 19221/sshd: root [p</span><br><span class="line">tcp6       0      0 [::]:ssh                [::]:*                  LISTEN      713/sshd</span><br><span class="line">unix  3      [ ]         STREAM     CONNECTED     12962    713/sshd</span><br><span class="line">unix  2      [ ]         DGRAM                    46967966 18793/sshd: root@pt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 netstat 输出中显示 PID 和进程名称</p>
+<p>netstat -p 可以与其它开关一起使用，就可以添加 “PID/进程名称” 到 netstat 输出中，这样 debugging 的时候可以很方便的发现特定端口运行的程序。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]<span class="comment"># netstat -pt</span></span><br><span class="line">Active Internet connections (w/o servers)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name</span><br><span class="line">tcp        0      0 10.141.106.118:35672    10.53.192.14:nsesrvr    ESTABLISHED 16588/secu-tcs-agen</span><br><span class="line">tcp        0     36 10.141.106.118:ssh      43.246.231.98:6918      ESTABLISHED 18793/sshd: root@pt</span><br><span class="line">tcp        0      0 10.141.106.118:ssh      a94-133-111-209.c:45314 TIME_WAIT   -</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找出运行在指定端口的进程</p>
+<p>运行在端口80的进程id为1576，再通过ps命令就可以找到具体的应用程序了。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_106_118_centos ~]<span class="comment"># netstat -anpt | grep ':80'</span></span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      1576/nginx: master</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="http://www.cnblogs.com/peida/archive/2013/03/08/2949194.html" target="_blank" rel="noopener">每天一个linux命令（56）：netstat命令</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Gavin 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Gavin 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/cmd/" rel="tag"># cmd</a>
+          
+            <a href="/tags/netstat/" rel="tag"># netstat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/12/linux-cmd-top/" rel="next" title="Linux 命令 - top">
+                <i class="fa fa-chevron-left"></i> Linux 命令 - top
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/06/node-tips/" rel="prev" title="Node技巧">
+                Node技巧 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/portrait.jpg" alt="Gavin">
+            
+              <p class="site-author-name" itemprop="name">Gavin</p>
+              <p class="site-description motion-element" itemprop="description">宁愿小众,不愿平庸</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">73</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">114</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://github.com/gavin66" title="GitHub &rarr; https://github.com/gavin66" rel="noopener" target="_blank">GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.v2ex.com/member/ksaa0096329" title="V2EX &rarr; https://www.v2ex.com/member/ksaa0096329" rel="noopener" target="_blank">V2EX</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://segmentfault.com/u/gavin66" title="SegmentFault &rarr; https://segmentfault.com/u/gavin66" rel="noopener" target="_blank">SegmentFault</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="http://weibo.com/lanbert" title="微博 &rarr; http://weibo.com/lanbert" rel="noopener" target="_blank">微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.zhihu.com/people/Gavin23" title="知乎 &rarr; https://www.zhihu.com/people/Gavin23" rel="noopener" target="_blank">知乎</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.douban.com/people/imgavin66" title="豆瓣 &rarr; https://www.douban.com/people/imgavin66" rel="noopener" target="_blank">豆瓣</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参数"><span class="nav-number">1.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实例"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gavin</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.6.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz",
+                'X-LC-Key': "ygD46J8JRaC0GkifemEHlXCf",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script src="/js/src/js.cookie.js?v=6.6.0"></script>
+  <script src="/js/src/scroll-cookie.js?v=6.6.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

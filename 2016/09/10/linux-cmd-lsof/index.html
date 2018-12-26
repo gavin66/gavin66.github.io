@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="在 UNIX 环境中，文件无处不在，这便产生了一句格言：“任何事物都是文件”。通过文件不仅仅可以访问常规数据，通常还可以访问网络连接和硬件。在有些情况下，当您使用 ls 请求目录清单时，将出现相应的条目。在其他情况下，如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字，不存在相应的目录清单。但是在后台为该应用程序分配了一个文件描述符，无论这个文件的本质如何，该文件描述符为应用程序与基">
+<meta name="keywords" content="Linux,cmd,lsof">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令 - lsof">
+<meta property="og:url" content="http://blog.imgavin.me/2016/09/10/linux-cmd-lsof/index.html">
+<meta property="og:site_name" content="Gavin&#39;s Blog">
+<meta property="og:description" content="在 UNIX 环境中，文件无处不在，这便产生了一句格言：“任何事物都是文件”。通过文件不仅仅可以访问常规数据，通常还可以访问网络连接和硬件。在有些情况下，当您使用 ls 请求目录清单时，将出现相应的条目。在其他情况下，如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字，不存在相应的目录清单。但是在后台为该应用程序分配了一个文件描述符，无论这个文件的本质如何，该文件描述符为应用程序与基">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-03-15T03:14:49.987Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令 - lsof">
+<meta name="twitter:description" content="在 UNIX 环境中，文件无处不在，这便产生了一句格言：“任何事物都是文件”。通过文件不仅仅可以访问常规数据，通常还可以访问网络连接和硬件。在有些情况下，当您使用 ls 请求目录清单时，将出现相应的条目。在其他情况下，如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字，不存在相应的目录清单。但是在后台为该应用程序分配了一个文件描述符，无论这个文件的本质如何，该文件描述符为应用程序与基">
+
+
+
+
+
+
+  <link rel="canonical" href="http://blog.imgavin.me/2016/09/10/linux-cmd-lsof/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Linux 命令 - lsof | Gavin's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gavin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">宁愿小众,不愿平庸</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">主页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-技术">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-tech/" rel="section">技术</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-生活">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-life/" rel="section">生活</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+
+    
+
+    <a href="/about" rel="section">关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.imgavin.me/2016/09/10/linux-cmd-lsof/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin">
+      <meta itemprop="description" content="宁愿小众,不愿平庸">
+      <meta itemprop="image" content="/uploads/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 命令 - lsof
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-09-10 09:56:12" itemprop="dateCreated datePublished" datetime="2016-09-10T09:56:12+08:00">2016-09-10</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/09/10/linux-cmd-lsof/" class="leancloud_visitors" data-flag-title="Linux 命令 - lsof">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在 UNIX 环境中，文件无处不在，这便产生了一句格言：“任何事物都是文件”。通过文件不仅仅可以访问常规数据，通常还可以访问网络连接和硬件。在有些情况下，当您使用 <code>ls</code> 请求目录清单时，将出现相应的条目。在其他情况下，如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字，不存在相应的目录清单。但是在后台为该应用程序分配了一个<em>文件描述符</em>，无论这个文件的本质如何，该文件描述符为应用程序与基础操作系统之间的交互提供了通用接口。</p>
+<p>因为应用程序打开文件的描述符列表提供了大量关于这个应用程序本身的信息，所以能够查看这个列表将是很有帮助的。完成这项任务的实用程序称为 <code>lsof</code>，它对应于“list open files”（列出打开的文件）。</p>
+<a id="more"></a>
+<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>因为 <code>lsof</code> 需要访问核心内存和各种文件，所以必须以 root 用户的身份运行它才能够充分地发挥其功能。</p>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><p>-a 列出打开文件存在的进程</p>
+<p>-c&lt;进程名&gt; 列出指定进程所打开的文件</p>
+<p>-g  列出GID号进程详情</p>
+<p>-d&lt;文件号&gt; 列出占用该文件号的进程</p>
+<p>+d&lt;目录&gt;  列出目录下被打开的文件</p>
+<p>+D&lt;目录&gt;  递归列出目录下被打开的文件</p>
+<p>-n&lt;目录&gt;  列出使用NFS的文件</p>
+<p>-i&lt;条件&gt;  列出符合条件的进程。（4、6、协议、:端口、 @ip ）</p>
+<p>-p&lt;进程号&gt; 列出指定进程号所打开的文件</p>
+<p>-u  列出UID号进程详情</p>
+<p>-h 显示帮助信息</p>
+<p>-v 显示版本信息</p>
+<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><ol>
+<li><p>无任何参数</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsof | head</span></span><br><span class="line">COMMAND     PID   TID             USER   FD      TYPE             DEVICE   SIZE/OFF       NODE NAME</span><br><span class="line">systemd       1                   root  cwd       DIR                8,2       4096          2 /</span><br><span class="line">systemd       1                   root  rtd       DIR                8,2       4096          2 /</span><br><span class="line">systemd       1                   root  txt       REG                8,2    1577232   48501039 /lib/systemd/systemd</span><br><span class="line">systemd       1                   root  mem       REG                8,2      18976   48497263 /lib/x86_64-linux-gnu/libuuid.so.1.3.0</span><br><span class="line">systemd       1                   root  mem       REG                8,2     262408   48497138 /lib/x86_64-linux-gnu/libblkid.so.1.1.0</span><br><span class="line">systemd       1                   root  mem       REG                8,2      14608   48501759 /lib/x86_64-linux-gnu/libdl-2.23.so</span><br><span class="line">systemd       1                   root  mem       REG                8,2     456632   48497224 /lib/x86_64-linux-gnu/libpcre.so.3.13.2</span><br><span class="line">systemd       1                   root  mem       REG                8,2    1868984   48501770 /lib/x86_64-linux-gnu/libc-2.23.so</span><br><span class="line">systemd       1                   root  mem       REG                8,2     138696   48501753 /lib/x86_64-linux-gnu/libpthread-2.23.so</span><br></pre></td></tr></table></figure>
+<p><strong>输出说明：</strong></p>
+<p>COMMAND：进程的名称</p>
+<p>PID：进程标识符</p>
+<p>PPID：父进程标识符（需要指定-R参数）</p>
+<p>USER：进程所有者</p>
+<p>PGID：进程所属组</p>
+<p>FD：文件描述符，应用程序通过文件描述符识别该文件。如cwd、txt等</p>
+<p>（1）cwd：表示current work dirctory，即：应用程序的当前工作目录，这是该应用程序启动的目录，除非它本身对这个目录进行更改</p>
+<p>（2）txt ：该类型的文件是程序代码，如应用程序二进制文件本身或共享库，如上列表中显示的 /sbin/init 程序</p>
+<p>（3）lnn：library references (AIX);</p>
+<p>（4）er：FD information error (see NAME column);</p>
+<p>（5）jld：jail directory (FreeBSD);</p>
+<p>（6）ltx：shared library text (code and data);</p>
+<p>（7）mxx ：hex memory-mapped type number xx.</p>
+<p>（8）m86：DOS Merge mapped file;</p>
+<p>（9）mem：memory-mapped file;</p>
+<p>（10）mmap：memory-mapped device;</p>
+<p>（11）pd：parent directory;</p>
+<p>（12）rtd：root directory;</p>
+<p>（13）tr：kernel trace file (OpenBSD);</p>
+<p>（14）v86  VP/ix mapped file;</p>
+<p>（15）0：表示标准输出</p>
+<p>（16）1：表示标准输入</p>
+<p>（17）2：表示标准错误</p>
+<p>一般在标准输出、标准错误、标准输入后还跟着文件状态模式：r、w、u等</p>
+<p>（1）u：表示该文件被打开并处于读取/写入模式</p>
+<p>（2）r：表示该文件被打开并处于只读模式</p>
+<p>（3）w：表示该文件被打开并处于</p>
+<p>（4）空格：表示该文件的状态模式为unknow，且没有锁定</p>
+<p>（5）-：表示该文件的状态模式为unknow，且被锁定</p>
+<p>同时在文件状态模式后面，还跟着相关的锁</p>
+<p>（1）N：for a Solaris NFS lock of unknown type;</p>
+<p>（2）r：for read lock on part of the file;</p>
+<p>（3）R：for a read lock on the entire file;</p>
+<p>（4）w：for a write lock on part of the file;（文件的部分写锁）</p>
+<p>（5）W：for a write lock on the entire file;（整个文件的写锁）</p>
+<p>（6）u：for a read and write lock of any length;</p>
+<p>（7）U：for a lock of unknown type;</p>
+<p>（8）x：for an SCO OpenServer Xenix lock on part      of the file;</p>
+<p>（9）X：for an SCO OpenServer Xenix lock on the      entire file;</p>
+<p>（10）space：if there is no lock.</p>
+<p>TYPE：文件类型，如DIR、REG等，常见的文件类型</p>
+<p>（1）DIR：表示目录</p>
+<p>（2）CHR：表示字符类型</p>
+<p>（3）BLK：块设备类型</p>
+<p>（4）UNIX： UNIX 域套接字</p>
+<p>（5）FIFO：先进先出 (FIFO) 队列</p>
+<p>（6）IPv4：网际协议 (IP) 套接字</p>
+<p>DEVICE：指定磁盘的名称</p>
+<p>SIZE：文件的大小</p>
+<p>NODE：索引节点（文件在磁盘上的标识）</p>
+<p>NAME：打开文件的确切名称</p>
+</li>
+<li><p>查看谁正在使用某个文件，也就是说查找某个文件相关的进程</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsof /bin/bash</span></span><br><span class="line">COMMAND   PID USER  FD   TYPE DEVICE SIZE/OFF     NODE NAME</span><br><span class="line">bash    21063 root txt    REG    8,2  1037528 10490885 /bin/bash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>递归查看某个目录的文件信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsof +D /home/wwwlogs/ | head -n 3</span></span><br><span class="line">COMMAND  PID USER   FD   TYPE DEVICE  SIZE/OFF     NODE NAME</span><br><span class="line">nginx   1578 root    2w   REG    8,2       111 14155829 /home/wwwlogs/nginx_error.log</span><br><span class="line">nginx   1578 root   26w   REG    8,2       111 14155829 /home/wwwlogs/nginx_error.log</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出某个用户打开的文件信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsof -u www | head -n 3</span></span><br><span class="line">COMMAND  PID USER   FD      TYPE             DEVICE   SIZE/OFF     NODE NAME</span><br><span class="line">php-fpm 1629  www  cwd       DIR                8,2       4096        2 /</span><br><span class="line">php-fpm 1629  www  rtd       DIR                8,2       4096        2 /</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出某个程序进程所打开的文件信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsof -c nginx | head -n 3</span></span><br><span class="line">COMMAND  PID USER   FD      TYPE             DEVICE   SIZE/OFF     NODE NAME</span><br><span class="line">nginx   1578 root  cwd       DIR                8,2       4096        2 /</span><br><span class="line">nginx   1578 root  rtd       DIR                8,2       4096        2 /</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出某个用户以及某个进程所打开的文件信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsof -u www -c nginx | head -n 3</span></span><br><span class="line">COMMAND  PID USER   FD      TYPE             DEVICE   SIZE/OFF     NODE NAME</span><br><span class="line">nginx   1578 root  cwd       DIR                8,2       4096        2 /</span><br><span class="line">nginx   1578 root  rtd       DIR                8,2       4096        2 /</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出除了某个用户外的被打开的文件信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -u ^root</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过某个进程号显示该进行打开的文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsof -p 7471 | head -n 3</span></span><br><span class="line">COMMAND  PID USER   FD      TYPE             DEVICE   SIZE/OFF     NODE NAME</span><br><span class="line">nginx   7471  www  cwd       DIR                8,2       4096        2 /</span><br><span class="line">nginx   7471  www  rtd       DIR                8,2       4096        2 /</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出多个进程号对应的文件信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -p 74171,7472,7473</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出除了某个进程号，其他进程号所打开的文件信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -p ^74171</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出所有的网络连接</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsof -i | head -n 5</span></span><br><span class="line">COMMAND     PID  USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME</span><br><span class="line">sshd        918  root    3u  IPv4    16232      0t0  TCP *:ssh (LISTEN)</span><br><span class="line">sshd        918  root    4u  IPv6    16234      0t0  TCP *:ssh (LISTEN)</span><br><span class="line">redis-ser  1088 redis    4u  IPv4    17999      0t0  TCP localhost:6379 (LISTEN)</span><br><span class="line">nginx      1578  root   14u  IPv4    16328      0t0  TCP *:81 (LISTEN)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出所有tcp 网络连接信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i tcp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出所有udp网络连接信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i udp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出谁在使用某个端口</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsof -i :3306</span></span><br><span class="line">COMMAND  PID  USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">mysqld  1612 mysql   19u  IPv6  18240      0t0  TCP *:mysql (LISTEN)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出谁在使用某个特定的udp端口</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i udp:55</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>特定的tcp端口</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i tcp:80</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出某个用户的所有活跃的网络端口</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -a -u <span class="built_in">test</span> -i</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出所有网络文件系统</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -N</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>域名socket文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -U</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>某个用户组所打开的文件信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -g 5555</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据文件描述列出对应的文件信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lsof  -d  txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准输入</span></span><br><span class="line">lsof -d 0</span><br><span class="line"><span class="comment"># 标准输出</span></span><br><span class="line">lsof  -d  1</span><br><span class="line"><span class="comment"># 标准错误</span></span><br><span class="line">lsof  -d  2</span><br><span class="line">lsof -d 0-3</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出COMMAND列中包含字符串” sshd”，且文件描符的类型为txt的文件信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -c sshd -a -d txt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出被进程号为 918 的进程所打开的所有 IPV4 的类型文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># lsof -i 4 -p 918 -a</span></span><br><span class="line">COMMAND PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">sshd    918 root    3u  IPv4  16232      0t0  TCP *:ssh (LISTEN)</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="http://www.cnblogs.com/peida/archive/2013/02/26/2932972.html" target="_blank" rel="noopener">每天一个linux命令（51）：lsof命令</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Gavin 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Gavin 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/cmd/" rel="tag"># cmd</a>
+          
+            <a href="/tags/lsof/" rel="tag"># lsof</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/22/mysql-event/" rel="next" title="MySQL 事件">
+                <i class="fa fa-chevron-left"></i> MySQL 事件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/12/linux-cmd-top/" rel="prev" title="Linux 命令 - top">
+                Linux 命令 - top <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/portrait.jpg" alt="Gavin">
+            
+              <p class="site-author-name" itemprop="name">Gavin</p>
+              <p class="site-description motion-element" itemprop="description">宁愿小众,不愿平庸</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">73</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">114</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://github.com/gavin66" title="GitHub &rarr; https://github.com/gavin66" rel="noopener" target="_blank">GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.v2ex.com/member/ksaa0096329" title="V2EX &rarr; https://www.v2ex.com/member/ksaa0096329" rel="noopener" target="_blank">V2EX</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://segmentfault.com/u/gavin66" title="SegmentFault &rarr; https://segmentfault.com/u/gavin66" rel="noopener" target="_blank">SegmentFault</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="http://weibo.com/lanbert" title="微博 &rarr; http://weibo.com/lanbert" rel="noopener" target="_blank">微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.zhihu.com/people/Gavin23" title="知乎 &rarr; https://www.zhihu.com/people/Gavin23" rel="noopener" target="_blank">知乎</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.douban.com/people/imgavin66" title="豆瓣 &rarr; https://www.douban.com/people/imgavin66" rel="noopener" target="_blank">豆瓣</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#说明"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参数"><span class="nav-number">1.1.</span> <span class="nav-text">参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实例"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gavin</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.6.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz",
+                'X-LC-Key': "ygD46J8JRaC0GkifemEHlXCf",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script src="/js/src/js.cookie.js?v=6.6.0"></script>
+  <script src="/js/src/scroll-cookie.js?v=6.6.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

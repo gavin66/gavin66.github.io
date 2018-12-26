@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Markdown 是一种轻量级标记语言，创始人为约翰·格鲁伯（John Gruber）。它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档”。这种语言吸收了很多在电子邮件中已有的纯文本标记的特性。  它基于纯文本，方便修改和共享； 几乎可以在所有的文本编辑器中编写； 有众多编程语言的实现，以及应用的相关扩展； 在 GitHub 等网站中有很好的应用；">
+<meta name="keywords" content="markdown,语法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Markdown 轻量级标记语言">
+<meta property="og:url" content="http://blog.imgavin.me/2015/05/22/markdown-cheat-sheet/index.html">
+<meta property="og:site_name" content="Gavin&#39;s Blog">
+<meta property="og:description" content="Markdown 是一种轻量级标记语言，创始人为约翰·格鲁伯（John Gruber）。它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档”。这种语言吸收了很多在电子邮件中已有的纯文本标记的特性。  它基于纯文本，方便修改和共享； 几乎可以在所有的文本编辑器中编写； 有众多编程语言的实现，以及应用的相关扩展； 在 GitHub 等网站中有很好的应用；">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.imgavin.me/2015/05/22/markdown-cheat-sheet/md1.png">
+<meta property="og:image" content="http://blog.imgavin.me/2015/05/22/markdown-cheat-sheet/md2.png">
+<meta property="og:image" content="http://blog.imgavin.me/2015/05/22/markdown-cheat-sheet/md3.png">
+<meta property="og:image" content="https://avatars2.githubusercontent.com/u/3265208?v=3&s=100">
+<meta property="og:image" content="https://avatars2.githubusercontent.com/u/3265208?v=3&s=100">
+<meta property="og:image" content="https://avatars2.githubusercontent.com/u/3265208?v=3&s=100">
+<meta property="og:image" content="http://blog.imgavin.me/2015/05/22/markdown-cheat-sheet/md4.png">
+<meta property="og:image" content="http://blog.imgavin.me/2015/05/22/markdown-cheat-sheet/md5.png">
+<meta property="og:updated_time" content="2017-02-09T03:08:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Markdown 轻量级标记语言">
+<meta name="twitter:description" content="Markdown 是一种轻量级标记语言，创始人为约翰·格鲁伯（John Gruber）。它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档”。这种语言吸收了很多在电子邮件中已有的纯文本标记的特性。  它基于纯文本，方便修改和共享； 几乎可以在所有的文本编辑器中编写； 有众多编程语言的实现，以及应用的相关扩展； 在 GitHub 等网站中有很好的应用；">
+<meta name="twitter:image" content="http://blog.imgavin.me/2015/05/22/markdown-cheat-sheet/md1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://blog.imgavin.me/2015/05/22/markdown-cheat-sheet/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Markdown 轻量级标记语言 | Gavin's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gavin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">宁愿小众,不愿平庸</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">主页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-技术">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-tech/" rel="section">技术</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-生活">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-life/" rel="section">生活</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+
+    
+
+    <a href="/about" rel="section">关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.imgavin.me/2015/05/22/markdown-cheat-sheet/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin">
+      <meta itemprop="description" content="宁愿小众,不愿平庸">
+      <meta itemprop="image" content="/uploads/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Markdown 轻量级标记语言
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-05-22 10:12:07" itemprop="dateCreated datePublished" datetime="2015-05-22T10:12:07+08:00">2015-05-22</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2015/05/22/markdown-cheat-sheet/" class="leancloud_visitors" data-flag-title="Markdown 轻量级标记语言">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Markdown 是一种轻量级标记语言，创始人为约翰·格鲁伯（John Gruber）。它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档”。这种语言吸收了很多在电子邮件中已有的纯文本标记的特性。</p>
+<ul>
+<li>它基于纯文本，方便修改和共享；</li>
+<li>几乎可以在所有的文本编辑器中编写；</li>
+<li>有众多编程语言的实现，以及应用的相关扩展；</li>
+<li>在 <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a> 等网站中有很好的应用；</li>
+<li>Markdown 完全兼容 HTML 语法，可以直接在 Markdown 文档中插入 HTML 内容</li>
+<li>很容易转换为 HTML 文档或其他格式；</li>
+<li>适合用来编写文档、记录笔记、撰写文章。</li>
+</ul>
+<a id="more"></a>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><h3 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># H1</span><br><span class="line">## H2</span><br><span class="line">### H3</span><br><span class="line">#### H4</span><br><span class="line">##### H5</span><br><span class="line">###### H6</span><br><span class="line"></span><br><span class="line">另外，还有一种针对 H1 和 H2 的样式：</span><br><span class="line"></span><br><span class="line">Alt-H1</span><br><span class="line">======</span><br><span class="line"></span><br><span class="line">Alt-H2</span><br><span class="line">------</span><br></pre></td></tr></table></figure>
+<img src="/2015/05/22/markdown-cheat-sheet/md1.png">
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><ol>
+<li>引用内容</li>
+</ol>
+<p>在段落或其他内容前使用 <code>&gt;</code> 符号，就可以将这段内容标记为 ‘引用’ 的内容（<code>&lt;blockquote&gt;</code>）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; 引用内容</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>引用内容</p>
+</blockquote>
+<ol start="2">
+<li>多行引用</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; 多行引用</span><br><span class="line">&gt; 可以在每行前加 `&gt;`</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>多行引用<br>可以在每行前加 <code>&gt;</code></p>
+</blockquote>
+<ol start="3">
+<li>嵌套引用</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; 也可以在引用中</span><br><span class="line">&gt;&gt; 使用嵌套的引用</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>也可以在引用中</p>
+<blockquote>
+<p>使用嵌套的引用</p>
+</blockquote>
+</blockquote>
+<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><ol>
+<li>无序列表</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* 可以使用 `*` 作为标记</span><br><span class="line">+ 也可以使用 `+`</span><br><span class="line">- 或者 `-`</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以使用 <code>*</code> 作为标记</li>
+<li>也可以使用 <code>+</code></li>
+<li>或者 <code>-</code></li>
+</ul>
+<ol start="2">
+<li>有序列表</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 有序列表以数字和 `.` 开始；</span><br><span class="line">3. 数字的序列并不会影响生成的列表序列；</span><br><span class="line">4. 但仍然推荐按照自然顺序（1.2.3...）编写。</span><br></pre></td></tr></table></figure>
+<img src="/2015/05/22/markdown-cheat-sheet/md2.png">
+<ol start="3">
+<li>嵌套的列表</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 第一层</span><br><span class="line">  + 1-1</span><br><span class="line">  + 1-2</span><br><span class="line">2. 无序列表和有序列表可以随意相互嵌套</span><br><span class="line">  1. 2-1</span><br><span class="line">  2. 2-2</span><br></pre></td></tr></table></figure>
+<img src="/2015/05/22/markdown-cheat-sheet/md3.png">
+<ol start="4">
+<li>其他</li>
+</ol>
+<ul>
+<li>无序列表项的开始是：符号 空格；</li>
+<li>有序列表项的开始是：数字 <code>.</code> 空格；</li>
+<li>空格至少为一个，多个空格将被解析为一个；</li>
+<li>如果仅需要在行前显示数字和 <code>.</code>：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">05\. 可以使用：数字\. 来取消显示为列表</span><br></pre></td></tr></table></figure>
+<p>05. 可以使用：数字. 来取消显示为列表</p>
+<blockquote>
+<p><code>\*</code> 的语法专门用来显示 Markdown 语法中使用的特殊字符，参考 <a href="http://xianbai.me/learn-md/article/syntax/blackslash-escapes.html" target="_blank" rel="noopener">字符转义</a></p>
+</blockquote>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><ol>
+<li>代码块</li>
+</ol>
+<p>可以使用缩进来插入代码块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt; // Tab开头</span><br><span class="line">    &lt;title&gt;Markdown&lt;/title&gt;</span><br><span class="line">&lt;/html&gt; // 四个空格开头</span><br></pre></td></tr></table></figure>
+<p>代码块前后需要有至少一个空行，且每行代码前需要有至少一个 Tab 或四个空格；</p>
+<ol start="2">
+<li>行内代码</li>
+</ol>
+<p>也可以通过 <code></code>，插入行内代码（<code>是</code>Tab<code>键上边、数字</code>1` 键左侧的那个按键）：</p>
+<p>例如 <code>Markdown</code></p>
+<ol start="3">
+<li>转换规则</li>
+</ol>
+<p>代码块中的文本（包括 Markdown 语法）都会显示为原始内容，而特殊字符会被转换为 HTML <a href="https://zh.wikipedia.org/wiki/XML%E4%B8%8EHTML%E5%AD%97%E7%AC%A6%E5%AE%9E%E4%BD%93%E5%BC%95%E7%94%A8%E5%88%97%E8%A1%A8" target="_blank" rel="noopener">字符实体</a>。</p>
+<h3 id="分隔线"><a href="#分隔线" class="headerlink" title="分隔线"></a>分隔线</h3><p>可以在一行中使用三个或更多的 <code>*</code>、<code>-</code> 或 <code>_</code> 来添加分隔线（<code></code>）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">***</span><br><span class="line">------</span><br><span class="line">___</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="超链接"><a href="#超链接" class="headerlink" title="超链接"></a>超链接</h3><ol>
+<li>行内式</li>
+</ol>
+<p>格式为 <code>[link text](URL &#39;title text&#39;)</code>。</p>
+<ul>
+<li>普通链接：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Google](http://www.google.com/)</span><br></pre></td></tr></table></figure>
+<p><a href="http://www.google.com/" target="_blank" rel="noopener">Google</a></p>
+<ul>
+<li>指向本地文件的链接：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[icon.png](./images/icon.png)</span><br></pre></td></tr></table></figure>
+<p><a href="http://xianbai.me/learn-md/article/syntax/images/icon.png" target="_blank" rel="noopener">icon.png</a></p>
+<ul>
+<li>包含 ‘title’ 的链接:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Google](http://www.google.com/ &quot;Google&quot;)</span><br></pre></td></tr></table></figure>
+<p><a href="http://www.google.com/" target="_blank" rel="noopener">Google</a></p>
+<blockquote>
+<p>title 使用 ‘ 或 “ 都是可以的。</p>
+</blockquote>
+<ol start="2">
+<li>参考式</li>
+</ol>
+<p>参考式链接的写法相当于行内式拆分成两部分，并通过一个 <em>识别符</em> 来连接两部分。参考式能尽量保持文章结构的简单，也方便统一管理 URL。</p>
+<ul>
+<li>首先，定义链接：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Google][link]</span><br></pre></td></tr></table></figure>
+<p><a href="http://www.google.com/" target="_blank" rel="noopener">Google</a></p>
+<p>第二个方括号内为链接独有的 <em>识别符</em>，可以是字母、数字、空白或标点符号。识别符是 <em>不区分大小写</em> 的；</p>
+<ul>
+<li>然后定义链接内容：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[link]: http://www.google.com/ &quot;Google&quot;</span><br></pre></td></tr></table></figure>
+<p>其格式为：<code>[识别符]: URL &#39;title&#39;</code>。</p>
+<blockquote>
+<p>其中，URL可以使用 &lt;&gt; 包括起来，title 可以使用 “”、’’、() 包括（考虑到兼容性，建议使用引号），title 部分也可以换行来写；</p>
+<p>链接内容的定义可以放在同一个文件的 <em>任意位置</em>；</p>
+</blockquote>
+<ul>
+<li>也可以省略 <em>识别符</em>，使用链接文本作为 <em>识别符</em>：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[Google][]</span><br><span class="line">[Google]: http://www.google.com/ &quot;Google&quot;</span><br></pre></td></tr></table></figure>
+<p><a href="http://www.google.com/" target="_blank" rel="noopener">Google</a></p>
+<blockquote>
+<p>参考式相对于行内式有一个明显的优点，就是可以在多个不同的位置引用同一个 URL。</p>
+</blockquote>
+<ol start="3">
+<li>自动链接</li>
+</ol>
+<p>使用 <code>&lt;&gt;</code> 包括的 URL 或邮箱地址会被自动转换为超链接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;http://www.google.com/&gt;</span><br><span class="line"></span><br><span class="line">&lt;123@email.com&gt;</span><br></pre></td></tr></table></figure>
+<p><a href="http://www.google.com/" target="_blank" rel="noopener">http://www.google.com/</a></p>
+<p><a href="mailto:123@email.com" target="_blank" rel="noopener">123@email.com</a></p>
+<p>该方式适合行内较短的链接，会使用 URL 作为链接文字。邮箱地址会自动编码，以逃避抓取机器人。</p>
+<h3 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h3><p>插入图片的语法和插入超链接的语法基本一致，只是在最前面多一个 <code>!</code>。也分为行内式和参考式两种。</p>
+<ol>
+<li>行内式</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![GitHub](https://avatars2.githubusercontent.com/u/3265208?v=3&amp;s=100 &quot;GitHub,Social Coding&quot;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://avatars2.githubusercontent.com/u/3265208?v=3&amp;s=100" alt="GitHub" title="GitHub,Social Coding"></p>
+<p>方括号中的部分是图片的替代文本，括号中的 ‘title’ 部分和链接一样，是可选的。</p>
+<ol start="2">
+<li>参考式</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">![GitHub][github]</span><br><span class="line"></span><br><span class="line">[github]: https://avatars2.githubusercontent.com/u/3265208?v=3&amp;s=100 &quot;GitHub,Social Coding&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="https://avatars2.githubusercontent.com/u/3265208?v=3&amp;s=100" alt="GitHub"></p>
+<ol start="3">
+<li>指定图片的显示大小</li>
+</ol>
+<p>Markdown 不支持指定图片的显示大小，不过可以通过直接插入<code></code>标签来指定相关属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;https://avatars2.githubusercontent.com/u/3265208?v=3&amp;s=100&quot; alt=&quot;GitHub&quot; title=&quot;GitHub,Social Coding&quot; width=&quot;50&quot; height=&quot;50&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://avatars2.githubusercontent.com/u/3265208?v=3&amp;s=100" alt="GitHub"></p>
+<h3 id="强调"><a href="#强调" class="headerlink" title="强调"></a>强调</h3><ol>
+<li>使用 <code>* *</code> 或 <code>_ _</code> 包括的文本会被转换为 <code></code> ，通常表现为斜体：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这是用来 *演示* 的 _文本_</span><br></pre></td></tr></table></figure>
+<p>这是用来 <em>演示</em> 的 <em>文本</em></p>
+<ol start="2">
+<li>使用 <code>** **</code> 或 <code>__ __</code> 包括的文本会被转换为 <code></code>，通常表现为加粗：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这是用来 **演示** 的 __文本__</span><br></pre></td></tr></table></figure>
+<p>这是用来 <strong>演示</strong> 的 <strong>文本</strong></p>
+<ol start="3">
+<li>用来包括文本的 <code>*</code> 或 <code>_</code> 内侧不能有空白，否则 <code>*</code> 和 <code>_</code> 将不会被转换（不同的实现会有不同的表现）：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这是用来 * 演示* 的 _文本 _</span><br></pre></td></tr></table></figure>
+<p>这是用来 <em>演示</em> 的 <em>文本</em></p>
+<ol start="4">
+<li>如果需要在文本中显示成对的 <code>*</code> 或 <code>_</code>，可以在符号前加入 <code>\</code> 即可：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这是用来 \*演示\* 的 \_文本\_</span><br></pre></td></tr></table></figure>
+<p>这是用来 <em>演示</em> 的 _文本_</p>
+<ol start="5">
+<li><code>*</code>、<code>**</code>、<code>_</code> 和 <code>__</code> 都必须 <em>成对使用</em> 。</li>
+</ol>
+<h3 id="字符转义"><a href="#字符转义" class="headerlink" title="字符转义"></a>字符转义</h3><p>反斜线（<code>\</code>）用于插入在 Markdown 语法中有特殊作用的字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">这是用来 *演示* 的 _文本_</span><br><span class="line"></span><br><span class="line">这是用来 \*演示\* 的 \_文本\_</span><br></pre></td></tr></table></figure>
+<p>这是用来 <em>演示</em> 的 <em>文本</em></p>
+<p>这是用来 <em>演示</em> 的 _文本_</p>
+<p>这些字符包括：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">\</span><br><span class="line">`</span><br><span class="line">*</span><br><span class="line">_</span><br><span class="line">&#123;&#125;</span><br><span class="line">[]</span><br><span class="line">()</span><br><span class="line">#</span><br><span class="line">+</span><br><span class="line">-</span><br><span class="line">.</span><br><span class="line">!</span><br></pre></td></tr></table></figure>
+<h2 id="扩展语法"><a href="#扩展语法" class="headerlink" title="扩展语法"></a>扩展语法</h2><p>Markdown 标准 本身所包含的功能有限，所以产生了许多第三方的扩展语法，如 GitHub Flavored Markdown。</p>
+<p>这里只介绍众多扩展语法中的一部分内容，它们在不同平台或工具的支持程度不同，请参考具体平台或工具的文档和说明来使用。</p>
+<h3 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h3><p>这就是 <del>删除线</del><br>这就是 删除线</p>
+<h3 id="代码块和语法高亮"><a href="#代码块和语法高亮" class="headerlink" title="代码块和语法高亮"></a>代码块和语法高亮</h3><ol>
+<li>代码块</li>
+</ol>
+<p>与原来使用缩进来添加代码块的语法不同，这里使用 ` <figure class="highlight plain"><figcaption><span>` 来包含多行代码：</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">​</span><br></pre></td></tr></table></figure></p>
+<p>code<br>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line">&gt; 三个 ``` 要独占一行。</span><br><span class="line"></span><br><span class="line">2. 代码高亮</span><br><span class="line"></span><br><span class="line">在上面的代码块语法基础上，在第一组` ``` `之后添加代码的语言，如 &apos;javascript&apos; 或 &apos;js&apos;，即可将代码标记为 `JavaScript`：</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">window.addEventListener(&apos;load&apos;, function() &#123;</span><br><span class="line">  console.log(&apos;window loaded&apos;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<img src="/2015/05/22/markdown-cheat-sheet/md4.png">
+<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><ol>
+<li>单元格和表头</li>
+</ol>
+<p>使用 <code>|</code> 来分隔不同的单元格，使用 <code>-</code> 来分隔表头和其他行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">name | age</span><br><span class="line">---- | ---</span><br><span class="line">LearnShare | 12</span><br><span class="line">Mike |  32</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>age</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LearnShare</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Mike</td>
+<td>32</td>
+</tr>
+</tbody>
+</table>
+<p>为了美观，可以使用空格对齐不同行的单元格，并在左右两侧都使用 <code>|</code> 来标记单元格边界：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">|    name    | age |</span><br><span class="line">| ---------- | --- |</span><br><span class="line">| LearnShare |  12 |</span><br><span class="line">| Mike       |  32 |</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>age</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LearnShare</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Mike</td>
+<td>32</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>为了使 Markdown 更清晰，<code>|</code> 和 <code>-</code> 两侧需要至少有一个空格（最左侧和最右侧的 <code>|</code> 外就不需要了）。</p>
+</blockquote>
+<ol start="2">
+<li>对齐</li>
+</ol>
+<p>在表头下方的分隔线标记中加入 <code>:</code>，即可标记下方单元格内容的对齐方式：</p>
+<ul>
+<li><code>:---</code> 代表左对齐</li>
+<li><code>:--:</code> 代表居中对齐</li>
+<li><code>---:</code> 代表右对齐</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">| left | center | right |</span><br><span class="line">| :--- | :----: | ----: |</span><br><span class="line">| aaaa | bbbbbb | ccccc |</span><br><span class="line">| a    | b      | c     |</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>left</th>
+<th>center</th>
+<th>right</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>aaaa</td>
+<td>bbbbbb</td>
+<td>ccccc</td>
+</tr>
+<tr>
+<td>a</td>
+<td>b</td>
+<td>c</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>如果不使用对齐标记，单元格中的内容默认左对齐；表头单元格中的内容会一直居中对齐（不同的实现可能会有不同表现）。</p>
+</blockquote>
+<ol start="3">
+<li>插入其他内容</li>
+</ol>
+<p>表格中可以插入其他 Markdown 中的行内标记：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">|     name     | age |             blog                |</span><br><span class="line">| ------------ | --- | ------------------------------- |</span><br><span class="line">| _LearnShare_ |  12 | [LearnShare](http://xianbai.me) |</span><br><span class="line">| __Mike__     |  32 | [Mike](http://mike.me)          |</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>age</th>
+<th>blog</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>LearnShare</em></td>
+<td>12</td>
+<td><a href="http://xianbai.me/" target="_blank" rel="noopener">LearnShare</a></td>
+</tr>
+<tr>
+<td><strong>Mike</strong></td>
+<td>32</td>
+<td><a href="http://mike.me/" target="_blank" rel="noopener">Mike</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="Task-List"><a href="#Task-List" class="headerlink" title="Task List"></a>Task List</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- [ ] Eat</span><br><span class="line">- [x] Code</span><br><span class="line">- [x] HTML</span><br><span class="line">- [x] CSS</span><br><span class="line">- [x] JavaScript</span><br><span class="line">- [ ] Sleep</span><br></pre></td></tr></table></figure>
+<img src="/2015/05/22/markdown-cheat-sheet/md5.png">
+<h2 id="编辑器"><a href="#编辑器" class="headerlink" title="编辑器"></a>编辑器</h2><p>推荐一些可以用来书写、编辑 Markdown 的工具，包括客户端、编辑器/IDE 插件，以及在线 Web 工具等</p>
+<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><ul>
+<li><a href="http://typora.io/" target="_blank" rel="noopener">Typora</a> - macOS Windows Linux  <em>简洁，清新，功能全面，推荐使用</em></li>
+<li><a href="http://25.io/mou/" target="_blank" rel="noopener">Mou</a> - macOS</li>
+<li><a href="http://markdownpad.com/" target="_blank" rel="noopener">MarkdownPad</a> - Windows</li>
+<li><a href="http://pad.haroopress.com/" target="_blank" rel="noopener">Haroopad</a> - macOS Windows Linux</li>
+<li><a href="http://macdown.uranusjr.com/" target="_blank" rel="noopener">MacDown</a> - macOS</li>
+<li><a href="https://www.zybuluo.com/cmd/" target="_blank" rel="noopener">Cmd Markdown</a> - macOS Windows Linux</li>
+</ul>
+<h3 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h3><ul>
+<li><a href="https://www.zybuluo.com/mdeditor" target="_blank" rel="noopener">Cmd Markdown</a></li>
+<li><a href="https://stackedit.io/" target="_blank" rel="noopener">StackEdit</a></li>
+<li><a href="http://dillinger.io/" target="_blank" rel="noopener">Dillinger</a></li>
+</ul>
+<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><ul>
+<li><a href="https://github.com/jonschlinkert/sublime-markdown-extended" target="_blank" rel="noopener">sublime-markdown-extended</a> - Sublime Text</li>
+<li><a href="https://github.com/atom/markdown-preview" target="_blank" rel="noopener">Markdown Preview package</a> - Atom</li>
+<li><a href="https://github.com/nicoulaj/idea-markdown" target="_blank" rel="noopener">IDEA Markdown</a> - IDEA</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Gavin 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Gavin 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/markdown/" rel="tag"># markdown</a>
+          
+            <a href="/tags/语法/" rel="tag"># 语法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/04/20/my-open-jquery-sidebar/" rel="next" title="我的开源项目 - 基于 jquery 的侧边栏插件">
+                <i class="fa fa-chevron-left"></i> 我的开源项目 - 基于 jquery 的侧边栏插件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/06/11/php-extend-yaf-install/" rel="prev" title="PHP 安装 YAF 扩展程序">
+                PHP 安装 YAF 扩展程序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/portrait.jpg" alt="Gavin">
+            
+              <p class="site-author-name" itemprop="name">Gavin</p>
+              <p class="site-description motion-element" itemprop="description">宁愿小众,不愿平庸</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">73</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">114</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://github.com/gavin66" title="GitHub &rarr; https://github.com/gavin66" rel="noopener" target="_blank">GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.v2ex.com/member/ksaa0096329" title="V2EX &rarr; https://www.v2ex.com/member/ksaa0096329" rel="noopener" target="_blank">V2EX</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://segmentfault.com/u/gavin66" title="SegmentFault &rarr; https://segmentfault.com/u/gavin66" rel="noopener" target="_blank">SegmentFault</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="http://weibo.com/lanbert" title="微博 &rarr; http://weibo.com/lanbert" rel="noopener" target="_blank">微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.zhihu.com/people/Gavin23" title="知乎 &rarr; https://www.zhihu.com/people/Gavin23" rel="noopener" target="_blank">知乎</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.douban.com/people/imgavin66" title="豆瓣 &rarr; https://www.douban.com/people/imgavin66" rel="noopener" target="_blank">豆瓣</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#语法"><span class="nav-number">1.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标题"><span class="nav-number">1.1.</span> <span class="nav-text">标题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引用"><span class="nav-number">1.2.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表"><span class="nav-number">1.3.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">1.4.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分隔线"><span class="nav-number">1.5.</span> <span class="nav-text">分隔线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#超链接"><span class="nav-number">1.6.</span> <span class="nav-text">超链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片"><span class="nav-number">1.7.</span> <span class="nav-text">图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#强调"><span class="nav-number">1.8.</span> <span class="nav-text">强调</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符转义"><span class="nav-number">1.9.</span> <span class="nav-text">字符转义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展语法"><span class="nav-number">2.</span> <span class="nav-text">扩展语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#删除线"><span class="nav-number">2.1.</span> <span class="nav-text">删除线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码块和语法高亮"><span class="nav-number">2.2.</span> <span class="nav-text">代码块和语法高亮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表格"><span class="nav-number">2.3.</span> <span class="nav-text">表格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Task-List"><span class="nav-number">2.4.</span> <span class="nav-text">Task List</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编辑器"><span class="nav-number">3.</span> <span class="nav-text">编辑器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端"><span class="nav-number">3.1.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web"><span class="nav-number">3.2.</span> <span class="nav-text">Web</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件"><span class="nav-number">3.3.</span> <span class="nav-text">插件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gavin</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.6.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz",
+                'X-LC-Key': "ygD46J8JRaC0GkifemEHlXCf",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script src="/js/src/js.cookie.js?v=6.6.0"></script>
+  <script src="/js/src/scroll-cookie.js?v=6.6.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

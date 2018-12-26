@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Linux中的top命令显示系统上正在运行的进程。它是系统管理员最重要的工具之一。被广泛用于监视服务器的负载。">
+<meta name="keywords" content="Linux,cmd,top">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令 - top">
+<meta property="og:url" content="http://blog.imgavin.me/2016/09/12/linux-cmd-top/index.html">
+<meta property="og:site_name" content="Gavin&#39;s Blog">
+<meta property="og:description" content="Linux中的top命令显示系统上正在运行的进程。它是系统管理员最重要的工具之一。被广泛用于监视服务器的负载。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-11-19T03:30:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令 - top">
+<meta name="twitter:description" content="Linux中的top命令显示系统上正在运行的进程。它是系统管理员最重要的工具之一。被广泛用于监视服务器的负载。">
+
+
+
+
+
+
+  <link rel="canonical" href="http://blog.imgavin.me/2016/09/12/linux-cmd-top/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Linux 命令 - top | Gavin's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gavin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">宁愿小众,不愿平庸</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">主页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-技术">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-tech/" rel="section">技术</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-生活">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-life/" rel="section">生活</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+
+    
+
+    <a href="/about" rel="section">关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.imgavin.me/2016/09/12/linux-cmd-top/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin">
+      <meta itemprop="description" content="宁愿小众,不愿平庸">
+      <meta itemprop="image" content="/uploads/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 命令 - top
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-09-12 11:29:04" itemprop="dateCreated datePublished" datetime="2016-09-12T11:29:04+08:00">2016-09-12</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/09/12/linux-cmd-top/" class="leancloud_visitors" data-flag-title="Linux 命令 - top">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Linux中的top命令显示系统上正在运行的进程。它是系统管理员最重要的工具之一。被广泛用于监视服务器的负载。</p>
+<a id="more"></a>
+<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">top - 11:33:24 up 52 days, 41 min,  1 user,  load average: 0.00, 0.00, 0.00</span><br><span class="line">Tasks: 186 total,   1 running, 185 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu(s):  0.0 us,  0.2 sy,  0.0 ni, 99.8 id,  0.1 wa,  0.0 hi,  0.0 si,  0.0 st</span><br><span class="line">KiB Mem : 16335708 total, 11381828 free,  1275880 used,  3678000 buff/cache</span><br><span class="line">KiB Swap: 16679932 total, 16679932 free,        0 used. 14545716 avail Mem</span><br><span class="line"></span><br><span class="line">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span><br><span class="line"> 1579 www       20   0   53956  25572   2924 S   0.3  0.2   4:43.80 nginx</span><br><span class="line">    1 root      20   0   37856   5856   3972 S   0.0  0.0   4:00.24 systemd</span><br><span class="line">    2 root      20   0       0      0      0 S   0.0  0.0   0:00.47 kthreadd</span><br><span class="line">    3 root      20   0       0      0      0 S   0.0  0.0   0:01.81 ksoftirqd/0</span><br><span class="line">    5 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:0H</span><br><span class="line">    7 root      20   0       0      0      0 S   0.0  0.0  59:33.18 rcu_sched</span><br><span class="line">    8 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_bh</span><br><span class="line">    9 root      rt   0       0      0      0 S   0.0  0.0   0:00.60 migration/0</span><br><span class="line">   10 root      rt   0       0      0      0 S   0.0  0.0   0:21.35 watchdog/0</span><br></pre></td></tr></table></figure>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 当前时间 11:33:24； 系统运行了52天41分；当前登录了1个人；1，5，15分钟的系统负载；等待执行的任务长度</span></span><br><span class="line">top - 11:33:24 up 52 days, 41 min,  1 user,  load average: 0.00, 0.00, 0.00</span><br><span class="line"></span><br><span class="line"><span class="comment"># 186个进程，1个正在运行，185个在睡眠，0个停止，0个僵尸进程</span></span><br><span class="line">Tasks: 186 total,   1 running, 185 sleeping,   0 stopped,   0 zombie</span><br><span class="line"></span><br><span class="line">%Cpu(s):  0.0 us,  0.2 sy,  0.0 ni, 99.8 id,  0.1 wa,  0.0 hi,  0.0 si,  0.0 st</span><br><span class="line">0.0 us <span class="comment"># user CPU time  运行(未调整优先级的) 用户进程的CPU时间</span></span><br><span class="line">0.2 sy <span class="comment"># system CPU time 运行内核进程的CPU时间</span></span><br><span class="line">0.0 ni <span class="comment"># nice CPU time 运行已调整优先级的用户进程的CPU时间</span></span><br><span class="line">99.8 id <span class="comment"># idle 空闲CPU</span></span><br><span class="line">0.1 wa <span class="comment"># iowait 用于等待IO完成的CPU时间</span></span><br><span class="line">0.0 hi <span class="comment"># hardware irq 处理硬件中断的CPU时间</span></span><br><span class="line">0.0 si <span class="comment"># software irq 处理软件中断的CPU时间</span></span><br><span class="line">0.0 st <span class="comment"># steal time 这个虚拟机被hypervisor偷去的CPU时间（译注：如果当前处于一个hypervisor下的vm，实际上hypervisor也是要消耗一部分CPU处理时间的）</span></span><br><span class="line"></span><br><span class="line">KiB Mem : 16335708 total, 11381828 free,  1275880 used,  3678000 buff/cache</span><br><span class="line">KiB Swap: 16679932 total, 16679932 free,        0 used. 14545716 avail Mem</span><br><span class="line"></span><br><span class="line">16335708 total <span class="comment"># 物理内存总量</span></span><br><span class="line">11381828 free <span class="comment"># 空闲内存总量</span></span><br><span class="line">1275880 used <span class="comment"># 使用的物理内存总量</span></span><br><span class="line">3678000 buff/cache <span class="comment"># 缓存的内存量</span></span><br><span class="line">16679932 total <span class="comment"># 交换区总量</span></span><br><span class="line">16679932 free <span class="comment"># 空闲交换区总量</span></span><br><span class="line">0 used <span class="comment"># 使用的交换区总量</span></span><br><span class="line">14545716 avail Mem <span class="comment"># 缓存交换区总量,内存中的内容被换出到交换区，而后又被换入到内存，但使用过的交换区尚未被覆盖，该数值即为这些内容已存在于内存中的交换区的大小,相应的内存再次被换出时可不必再对交换区写入。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PID <span class="comment"># 进程ID，进程的唯一标识符</span></span><br><span class="line">PPID <span class="comment"># 父进程id</span></span><br><span class="line">UID <span class="comment"># 进程所有者的用户id</span></span><br><span class="line">USER <span class="comment"># 进程所有者的实际用户名</span></span><br><span class="line">GROUP <span class="comment"># 进程所有者的组名</span></span><br><span class="line">TTY <span class="comment"># 启动进程的终端名。不是从终端启动的进程则显示为 ?</span></span><br><span class="line">PR <span class="comment"># 进程的调度优先级。这个字段的一些值是'rt'。这意味这这些进程运行在实时态。</span></span><br><span class="line">NI <span class="comment"># 进程的nice值（优先级）。越小的值意味着越高的优先级。</span></span><br><span class="line">P <span class="comment"># 最后使用的CPU，仅在多CPU环境下有意义</span></span><br><span class="line">VIRT <span class="comment"># 进程使用的总虚拟内存 (virtual memory) 大小，包括进程的程序码、资料和共享程序库再加上被置换 (swap out) 的空间。VIRT = SWAP + RES</span></span><br><span class="line">SWAP <span class="comment"># 进程被置换的虚拟内存空间大小</span></span><br><span class="line">RES <span class="comment"># 进程非被置换的实体内存大小。RES = CODE + DATA</span></span><br><span class="line">CODE <span class="comment"># 进程的程序码在实体内存占用空间大小</span></span><br><span class="line">DATA <span class="comment"># 可执行代码以外的部分(数据段+栈)占用的物理内存大小，单位kb</span></span><br><span class="line">SHR <span class="comment"># 进程使用的共享内存大小，即可以和其他进程共享的内存空间</span></span><br><span class="line">nFLT <span class="comment"># 页面错误次数</span></span><br><span class="line">nDRT <span class="comment"># 最后一次写入到现在，被修改过的页面数。</span></span><br><span class="line">S <span class="comment"># 进程状态。D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程</span></span><br><span class="line">%CPU <span class="comment"># 上次屏幕更新到现在的CPU时间占用百分比</span></span><br><span class="line">%MEM <span class="comment"># 进程使用的物理内存百分比</span></span><br><span class="line">TIME+ <span class="comment"># 任务启动后到现在所使用的全部CPU时间，精确到百分之一秒</span></span><br><span class="line">COMMAND <span class="comment"># 进程名称（命令名/命令行）</span></span><br><span class="line">WCHAN <span class="comment"># 若该进程在睡眠，则显示睡眠中的系统函数名</span></span><br><span class="line">Flags <span class="comment"># 任务标志，参考 sched.h</span></span><br></pre></td></tr></table></figure>
+<h1 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h1><ul>
+<li><p><code>-b</code> - 以批处理模式启动top命令。当你想要在文件中保存输出时是很有用的。</p>
+</li>
+<li><p><code>-c</code> - 是否显示程序/命令的完整路径</p>
+</li>
+<li><p><code>-d</code> - 设置屏幕刷新间隔</p>
+</li>
+<li><p><code>-i</code> - 切换显示空闲进程</p>
+</li>
+<li><p><code>-n</code> - 屏幕刷新几次后退出 top 命令</p>
+</li>
+<li><p><code>-p</code> - 你可以用-p选项监控指定的PID。PID的值为0将被作为top命令自身的PID。</p>
+</li>
+<li><p><code>-u</code>，<code>-U</code> - 用户名 或者 UID</p>
+<p>可以用这些选项浏览特定用户的进程。用户名或者UID可以在选项中指定。-p、-u和-U选项是互斥的，同时只可以使用这其中一个选项</p>
+</li>
+</ul>
+<h1 id="交互命令"><a href="#交互命令" class="headerlink" title="交互命令"></a>交互命令</h1><ul>
+<li><p><code>h</code> 或 <code>?</code> - 显示交互命令的帮助菜单</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Help <span class="keyword">for</span> Interactive Commands - procps-ng version 3.3.10</span><br><span class="line">Window 1:Def: Cumulative mode Off.  System: Delay 3.0 secs; Secure mode Off.</span><br><span class="line"></span><br><span class="line">  Z,B,E,e   Global: <span class="string">'Z'</span> colors; <span class="string">'B'</span> bold; <span class="string">'E'</span>/<span class="string">'e'</span> summary/task memory scale</span><br><span class="line">  l,t,m     Toggle Summary: <span class="string">'l'</span> load avg; <span class="string">'t'</span> task/cpu stats; <span class="string">'m'</span> memory info</span><br><span class="line">  0,1,2,3,I Toggle: <span class="string">'0'</span> zeros; <span class="string">'1/2/3'</span> cpus or numa node views; <span class="string">'I'</span> Irix mode</span><br><span class="line">  f,F,X     Fields: <span class="string">'f'</span>/<span class="string">'F'</span> add/remove/order/sort; <span class="string">'X'</span> increase fixed-width</span><br><span class="line"></span><br><span class="line">  L,&amp;,&lt;,&gt; . Locate: <span class="string">'L'</span>/<span class="string">'&amp;'</span> find/again; Move sort column: <span class="string">'&lt;'</span>/<span class="string">'&gt;'</span> left/right</span><br><span class="line">  R,H,V,J . Toggle: <span class="string">'R'</span> Sort; <span class="string">'H'</span> Threads; <span class="string">'V'</span> Forest view; <span class="string">'J'</span> Num justify</span><br><span class="line">  c,i,S,j . Toggle: <span class="string">'c'</span> Cmd name/line; <span class="string">'i'</span> Idle; <span class="string">'S'</span> Time; <span class="string">'j'</span> Str justify</span><br><span class="line">  x,y     . Toggle highlights: <span class="string">'x'</span> sort field; <span class="string">'y'</span> running tasks</span><br><span class="line">  z,b     . Toggle: <span class="string">'z'</span> color/mono; <span class="string">'b'</span> bold/reverse (only <span class="keyword">if</span> <span class="string">'x'</span> or <span class="string">'y'</span>)</span><br><span class="line">  u,U,o,O . Filter by: <span class="string">'u'</span>/<span class="string">'U'</span> effective/any user; <span class="string">'o'</span>/<span class="string">'O'</span> other criteria</span><br><span class="line">  n,<span class="comment">#,^O  . Set: 'n'/'#' max tasks displayed; Show: Ctrl+'O' other filter(s)</span></span><br><span class="line">  C,...   . Toggle scroll coordinates msg <span class="keyword">for</span>: up,down,left,right,home,end</span><br><span class="line"></span><br><span class="line">  k,r       Manipulate tasks: <span class="string">'k'</span> <span class="built_in">kill</span>; <span class="string">'r'</span> renice</span><br><span class="line">  d or s    Set update interval</span><br><span class="line">  W,Y       Write configuration file <span class="string">'W'</span>; Inspect other output <span class="string">'Y'</span></span><br><span class="line">  q         Quit</span><br><span class="line">          ( commands shown with <span class="string">'.'</span> require a visible task display window )</span><br><span class="line">Press <span class="string">'h'</span> or <span class="string">'?'</span> <span class="keyword">for</span> <span class="built_in">help</span> with Windows,</span><br><span class="line">Type <span class="string">'q'</span> or &lt;Esc&gt; to <span class="built_in">continue</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>top命令默认在一个特定间隔(3秒)后刷新显示。要手动刷新，用户可以输入<code>回车</code>或者<code>空格</code>。</p>
+</li>
+<li><p><code>A</code> - 切换交替显示模式</p>
+<p>这个命令在全屏和交替模式间切换。在交替模式下会显示4个窗口（译注：分别关注不同的字段）:</p>
+<ol>
+<li>Def （默认字段组）</li>
+<li>Job （任务字段组）</li>
+<li>Mem （内存字段组）</li>
+<li>Usr （用户字段组）</li>
+</ol>
+<p>这四组字段共有一个独立的可配置的概括区域和它自己的可配置任务区域。4个窗口中只有一个窗口是当前窗口。当前窗口的名称显示在左上方。（译注：只有当前窗口才会接受你键盘交互命令）</p>
+<p>我们可以用’a’和’w’在4个 窗口间切换。’a’移到后一个窗口，’w’移到前一个窗口。用’g’命令你可以输入一个数字来选择当前窗口。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">1:Def - 10:11:07 up 52 days, 23:19,  1 user,  load average: 0.00, 0.00, 0.00</span><br><span class="line">Tasks: 183 total,   1 running, 182 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu(s):  1.0 us,  0.6 sy,  0.0 ni, 98.3 id,  0.2 wa,  0.0 hi,  0.0 si,  0.0 st</span><br><span class="line">KiB Mem : 16335708 total, 11379220 free,  1277840 used,  3678648 buff/cache</span><br><span class="line">KiB Swap: 16679932 total, 16679932 free,        0 used. 14543688 avail Mem</span><br><span class="line"></span><br><span class="line">1  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span><br><span class="line">     1 root      20   0   37804   5844   3972 S   1.0  0.0   4:04.34 systemd</span><br><span class="line">   746 message+  20   0   43024   3964   3376 S   1.0  0.0   0:51.24 dbus-daemon</span><br><span class="line">   379 root      20   0   35276   7496   7144 S   0.3  0.0   0:44.48 systemd-journal</span><br><span class="line">   523 root      20   0   95368   6900   5968 S   0.3  0.0   0:00.20 sshd</span><br><span class="line">   740 syslog    20   0  256396   4160   2752 S   0.3  0.0   0:13.94 rsyslogd</span><br><span class="line">   855 root      20   0   29396   3968   2760 S   0.3  0.0   0:22.99 systemd-logind</span><br><span class="line">   872 root      20   0   43672   3804   3060 R   0.3  0.0   0:00.02 top</span><br><span class="line">   971 root      10 -10    5724   3528   2436 S   0.3  0.0  10:40.83 iscsid</span><br><span class="line">     2 root      20   0       0      0      0 S   0.0  0.0   0:00.48 kthreadd</span><br><span class="line">     3 root      20   0       0      0      0 S   0.0  0.0   0:01.85 ksoftirqd/0</span><br><span class="line">     5 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:0H</span><br><span class="line">     7 root      20   0       0      0      0 S   0.0  0.0  60:37.04 rcu_sched</span><br><span class="line">     8 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_bh</span><br><span class="line">     9 root      rt   0       0      0      0 S   0.0  0.0   0:00.61 migration/0</span><br><span class="line">    10 root      rt   0       0      0      0 S   0.0  0.0   0:21.74 watchdog/0</span><br><span class="line">2  PID  PPID     TIME+  %CPU %MEM  PR  NI S    VIRT    RES   UID COMMAND</span><br><span class="line"> 31928     2   0:00.00   0.0  0.0  20   0 S       0      0     0 kworker/3:3</span><br><span class="line"> 31888     2   0:00.01   0.0  0.0  20   0 S       0      0     0 kworker/1:0</span><br><span class="line"> 31698     2   0:02.16   0.0  0.0  20   0 S       0      0     0 kworker/1:2</span><br><span class="line"> 31692     2   0:02.12   0.0  0.0  20   0 S       0      0     0 kworker/3:0</span><br><span class="line"> 31651     2   0:02.40   0.0  0.0  20   0 S       0      0     0 kworker/2:2</span><br><span class="line"> 13737     2   0:00.00   0.0  0.0  20   0 S       0      0     0 jfsSync</span><br><span class="line"> 13736     2   0:00.00   0.0  0.0  20   0 S       0      0     0 jfsCommit</span><br><span class="line"> 13735     2   0:00.00   0.0  0.0  20   0 S       0      0     0 jfsCommit</span><br><span class="line"> 13734     2   0:00.00   0.0  0.0  20   0 S       0      0     0 jfsCommit</span><br><span class="line"> 13733     2   0:00.00   0.0  0.0  20   0 S       0      0     0 jfsCommit</span><br><span class="line"> 13732     2   0:00.00   0.0  0.0  20   0 S       0      0     0 jfsIO</span><br><span class="line"> 13722     2   0:00.00   0.0  0.0   0 -20 S       0      0     0 xfs_mru_cache</span><br><span class="line"> 13721     2   0:00.00   0.0  0.0   0 -20 S       0      0     0 xfsalloc</span><br><span class="line">  3718  1628   0:00.70   0.0  0.1  20   0 S  211344  17620  1003 php-fpm</span><br><span class="line">  3505  1628   0:00.38   0.0  0.1  20   0 S  211344  17700  1003 php-fpm</span><br><span class="line">3  PID %MEM    VIRT    RES   CODE    DATA    SHR nMaj nDRT  %CPU COMMAND</span><br><span class="line">  1612  5.0 3328216 818040  12624 3282764  13784  111    0   0.0 mysqld</span><br><span class="line">  1648  0.2  292032  28352   8376   86228  15672    3    0   0.0 php-fpm</span><br><span class="line">  1635  0.2  291324  26620   8376   85520  14680    0    0   0.0 php-fpm</span><br><span class="line">  1657  0.2  291324  26620   8376   85520  14680    0    0   0.0 php-fpm</span><br><span class="line">  1581  0.2   54032  25680    728   22988   2924    0    0   0.0 nginx</span><br><span class="line">  1580  0.2   54032  25600    728   22988   2924    0    0   0.0 nginx</span><br><span class="line">  1579  0.2   53956  25572    728   22912   2924    0    0   0.0 nginx</span><br><span class="line">  1582  0.2   53828  25288    728   22784   2924    0    0   0.0 nginx</span><br><span class="line">  1665  0.1  288848  22708   8376   83044  13072    0    0   0.0 php-fpm</span><br><span class="line">  1650  0.1  287924  22060   8376   82120  13252    2    0   0.0 php-fpm</span><br><span class="line">  1647  0.1  288180  22040   8376   82376  13064    0    0   0.0 php-fpm</span><br><span class="line">  1653  0.1  214396  21952   8376   10668  10940    0    0   0.0 php-fpm</span><br><span class="line">  1660  0.1  287668  21456   8376   81864  13072    0    0   0.0 php-fpm</span><br><span class="line">  1649  0.1  287156  21292   8376   81352  13252    1    0   0.0 php-fpm</span><br><span class="line">  1659  0.1  287408  21188   8376   81604  13072    0    0   0.0 php-fpm</span><br><span class="line">4  PID  PPID   UID USER     RUSER    TTY          TIME+  %CPU %MEM S COMMAND</span><br><span class="line">  1579  1578  1003 www      www      ?          4:51.06   0.0  0.2 S nginx</span><br><span class="line">  1580  1578  1003 www      www      ?          4:24.78   0.0  0.2 S nginx</span><br><span class="line">  1581  1578  1003 www      www      ?          6:41.79   0.0  0.2 S nginx</span><br><span class="line">  1582  1578  1003 www      www      ?          5:07.00   0.0  0.2 S nginx</span><br><span class="line">  1629  1628  1003 www      www      ?          0:00.88   0.0  0.1 S php-fpm</span><br><span class="line">  1630  1628  1003 www      www      ?          0:00.87   0.0  0.1 S php-fpm</span><br><span class="line">  1631  1628  1003 www      www      ?          0:00.86   0.0  0.1 S php-fpm</span><br><span class="line">  1632  1628  1003 www      www      ?          0:00.76   0.0  0.1 S php-fpm</span><br><span class="line">  1633  1628  1003 www      www      ?          0:00.82   0.0  0.1 S php-fpm</span><br><span class="line">  1634  1628  1003 www      www      ?          0:00.84   0.0  0.1 S php-fpm</span><br><span class="line">  1635  1628  1003 www      www      ?          0:00.80   0.0  0.2 S php-fpm</span><br><span class="line">  1636  1628  1003 www      www      ?          0:00.84   0.0  0.1 S php-fpm</span><br><span class="line">  1637  1628  1003 www      www      ?          0:00.90   0.0  0.1 S php-fpm</span><br><span class="line">  1638  1628  1003 www      www      ?          0:00.85   0.0  0.1 S php-fpm</span><br><span class="line">  1639  1628  1003 www      www      ?          0:00.86   0.0  0.1 S php-fpm</span><br><span class="line">  1640  1628  1003 www      www      ?          0:00.78   0.0  0.1 S php-fpm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>B</code> - 触发粗体显示</p>
+</li>
+<li><p><code>d</code>或<code>s</code> - 设置显示的刷新间隔</p>
+<p>当按下’d’或’s’时，你将被提示输入一个值（以秒为单位），它会以设置的值作为刷新间隔。如果你这里输入了1，top将会每秒刷新。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">top - 10:13:42 up 52 days, 23:22,  1 user,  load average: 0.00, 0.00, 0.00</span><br><span class="line">Tasks: 184 total,   1 running, 183 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu(s):  0.0 us,  0.1 sy,  0.0 ni, 99.8 id,  0.1 wa,  0.0 hi,  0.0 si,  0.0 st</span><br><span class="line">KiB Mem : 16335708 total, 11379220 free,  1277816 used,  3678672 buff/cache</span><br><span class="line">KiB Swap: 16679932 total, 16679932 free,        0 used. 14543708 avail Mem</span><br><span class="line">Change delay from 3.0 to 1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>l</code>，<code>t</code>，<code>m</code> - 切换负载、任务、内存信息的显示</p>
+</li>
+<li><p><code>f</code> - 字段管理</p>
+<p>用于选择你想要显示的字段。用’*’标记的是已选择的。</p>
+<p>上下光标键在字段内导航，右光标键可以选择字段，回车或左光标键确认。</p>
+<p>d 或者空格是否显示字段，s 按那个字段排序，默认cpu，q 或 esc 退出。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">  169 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 scsi_tmf_1</span><br><span class="line">  170 root      20   0       0      0      0 S   0.0  0.0   0:00.00 scsi_eh_2</span><br><span class="line">  171 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 scsi_tmf_2</span><br><span class="line">  172 root      20   0       0      0      0 S   0.0  0.0   0:00.00 scsi_eh_3</span><br><span class="line">Fields Management <span class="keyword">for</span> window 1:Def, whose current sort field is %CPU</span><br><span class="line">   Navigate with Up/Dn, Right selects <span class="keyword">for</span> move <span class="keyword">then</span> &lt;Enter&gt; or Left commits,</span><br><span class="line">   <span class="string">'d'</span> or &lt;Space&gt; toggles display, <span class="string">'s'</span> sets sort.  Use <span class="string">'q'</span> or &lt;Esc&gt; to end!</span><br><span class="line"></span><br><span class="line">* PID     = Process Id</span><br><span class="line">* USER    = Effective User Name</span><br><span class="line">* PR      = Priority</span><br><span class="line">* NI      = Nice Value</span><br><span class="line">* VIRT    = Virtual Image (KiB)</span><br><span class="line">* RES     = Resident Size (KiB)</span><br><span class="line">* SHR     = Shared Memory (KiB)</span><br><span class="line">* S       = Process Status</span><br><span class="line">* %CPU    = CPU Usage</span><br><span class="line">* %MEM    = Memory Usage (RES)</span><br><span class="line">* TIME+   = CPU Time, hundredths</span><br><span class="line">* COMMAND = Command Name/Line</span><br><span class="line">  PPID    = Parent Process pid</span><br><span class="line">  UID     = Effective User Id</span><br><span class="line">  RUID    = Real User Id</span><br><span class="line">  RUSER   = Real User Name</span><br><span class="line">  SUID    = Saved User Id</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>R</code> - 反向排序</p>
+</li>
+<li><p><code>c</code> - 触发命令，切换是否显示进程启动时的完整路径和程序名。</p>
+</li>
+<li><p><code>i</code> - 切换显示空闲任务</p>
+</li>
+<li><p><code>V</code> - 切换树视图</p>
+</li>
+<li><p><code>Z</code> - 改变配色</p>
+<p>按下’Z’向用户显示一个改变top命令的输出颜色的屏幕。可以为8个任务区域选择8种颜色。</p>
+</li>
+<li><p><code>z</code> - 切换配色显示</p>
+</li>
+<li><p><code>u</code> - 显示特定用户的进程</p>
+<p>显示特定用户的进程。你会被提示输入用户名。空白将会显示全部用户。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">top - 10:40:20 up 52 days, 23:48,  1 user,  load average: 0.00, 0.02, 0.00</span><br><span class="line">Tasks: 179 total,   1 running, 178 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni, 99.9 id,  0.1 wa,  0.0 hi,  0.0 si,  0.0 st</span><br><span class="line">KiB Mem : 16335708 total, 11379908 free,  1277128 used,  3678672 buff/cache</span><br><span class="line">KiB Swap: 16679932 total, 16679932 free,        0 used. 14544364 avail Mem</span><br><span class="line">Which user (blank <span class="keyword">for</span> all) www</span><br><span class="line">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span><br><span class="line"> 1579 www       20   0   53956  25572   2924 S   0.0  0.2   4:51.21 nginx</span><br><span class="line"> 1580 www       20   0   54032  25600   2924 S   0.0  0.2   4:24.94 nginx</span><br><span class="line"> 1581 www       20   0   54032  25680   2924 S   0.0  0.2   6:41.79 nginx</span><br><span class="line"> 1582 www       20   0   53828  25288   2924 S   0.0  0.2   5:07.16 nginx</span><br><span class="line"> 1629 www       20   0  211348  17612   9868 S   0.0  0.1   0:00.88 php-fpm</span><br><span class="line"> 1630 www       20   0  211252  17524   9876 S   0.0  0.1   0:00.87 php-fpm</span><br><span class="line"> 1631 www       20   0  212916  19192   9876 S   0.0  0.1   0:00.86 php-fpm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>n</code>，<code>#</code> - 设置显示任务的最大数量</p>
+</li>
+<li><p><code>k</code> - 结束任务</p>
+</li>
+<li><p><code>r</code> - 重新设置任务的优先级</p>
+</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="http://orchome.com/298" target="_blank" rel="noopener">理解 VIRT RES SHR 之间的关系</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Gavin 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Gavin 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/cmd/" rel="tag"># cmd</a>
+          
+            <a href="/tags/top/" rel="tag"># top</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/10/linux-cmd-lsof/" rel="next" title="Linux 命令 - lsof">
+                <i class="fa fa-chevron-left"></i> Linux 命令 - lsof
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/23/linux-cmd-netstat/" rel="prev" title="Linux 命令 - netstat">
+                Linux 命令 - netstat <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/portrait.jpg" alt="Gavin">
+            
+              <p class="site-author-name" itemprop="name">Gavin</p>
+              <p class="site-description motion-element" itemprop="description">宁愿小众,不愿平庸</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">73</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">114</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://github.com/gavin66" title="GitHub &rarr; https://github.com/gavin66" rel="noopener" target="_blank">GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.v2ex.com/member/ksaa0096329" title="V2EX &rarr; https://www.v2ex.com/member/ksaa0096329" rel="noopener" target="_blank">V2EX</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://segmentfault.com/u/gavin66" title="SegmentFault &rarr; https://segmentfault.com/u/gavin66" rel="noopener" target="_blank">SegmentFault</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="http://weibo.com/lanbert" title="微博 &rarr; http://weibo.com/lanbert" rel="noopener" target="_blank">微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.zhihu.com/people/Gavin23" title="知乎 &rarr; https://www.zhihu.com/people/Gavin23" rel="noopener" target="_blank">知乎</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.douban.com/people/imgavin66" title="豆瓣 &rarr; https://www.douban.com/people/imgavin66" rel="noopener" target="_blank">豆瓣</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#实例"><span class="nav-number">1.</span> <span class="nav-text">实例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">1.1.</span> <span class="nav-text">说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选项"><span class="nav-number">2.</span> <span class="nav-text">选项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#交互命令"><span class="nav-number">3.</span> <span class="nav-text">交互命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gavin</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.6.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz",
+                'X-LC-Key': "ygD46J8JRaC0GkifemEHlXCf",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script src="/js/src/js.cookie.js?v=6.6.0"></script>
+  <script src="/js/src/scroll-cookie.js?v=6.6.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

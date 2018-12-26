@@ -23,6 +23,10 @@
 
 
 
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
 
 
 
@@ -147,6 +151,8 @@
 <meta name="twitter:image" content="http://blog.imgavin.me/2017/06/10/centos-environment/p1.png">
 
 
+
+  <link rel="alternate" href="/atom.xml" title="Gavin's Blog" type="application/atom+xml">
 
 
 
@@ -325,6 +331,13 @@
 
       
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            搜索</a>
+        </li>
+      
     </ul>
   
 
@@ -333,6 +346,25 @@
 
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 't-bzD9AonCuAKSmSy7ZA','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -441,6 +473,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/10/centos-environment/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/10/centos-environment/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -612,14 +655,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Gavin 微信支付">
+        <img id="wechat_qr" src="/uploads/wechatpay_cut.jpg" alt="Gavin 微信支付">
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Gavin 支付宝">
+        <img id="alipay_qr" src="/uploads/alipay_cut.jpg" alt="Gavin 支付宝">
         <p>支付宝</p>
       </div>
     
@@ -650,6 +693,26 @@
       
 
       
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+               <div id="needsharebutton-postbottom">
+                 <span class="btn">
+                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                 </span>
+               </div>
+            
+          </div>
+        
+        </div>
       
       
 
@@ -690,6 +753,13 @@
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
 
   
 
@@ -1008,6 +1078,13 @@
           
 
           
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
 
           
             <div class="links-of-author motion-element">
@@ -1252,9 +1329,30 @@
 
   
 
-
+  
+    <script id="dsq-count-scr" src="https://gavin23.disqus.com/count.js" async></script>
+  
 
   
+    <script>
+      var disqus_config = function () {
+        this.page.url = "http://blog.imgavin.me/2017/06/10/centos-environment/";
+        this.page.identifier = "2017/06/10/centos-environment/";
+        this.page.title = 'CentOS 新服务器环境设置与Web服务等搭建';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://gavin23.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
 
 
 
@@ -1338,12 +1436,48 @@
   
 
   
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 
   
 
   
 
   
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
   
 
   

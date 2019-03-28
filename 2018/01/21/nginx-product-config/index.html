@@ -142,7 +142,7 @@
 <meta property="og:site_name" content="Gavin&#39;s Blog">
 <meta property="og:description" content="安装1234567891011121314151617181920212223242526272829sudo yum install nginx# 开机启动systemctl enable nginx# 启动systemctl start nginx# 修改配置文件vim /etc/nginx/nginx.conf# 查询是否开启80端口则firewall-cmd --query-port=80">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-03-23T04:03:35.137Z">
+<meta property="og:updated_time" content="2019-03-28T10:20:56.798Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx 配置">
 <meta name="twitter:description" content="安装1234567891011121314151617181920212223242526272829sudo yum install nginx# 开机启动systemctl enable nginx# 启动systemctl start nginx# 修改配置文件vim /etc/nginx/nginx.conf# 查询是否开启80端口则firewall-cmd --query-port=80">
@@ -518,6 +518,11 @@
 
       
         <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开机启动</span></span><br><span class="line">systemctl <span class="built_in">enable</span> nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line">systemctl start nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改配置文件</span></span><br><span class="line">vim /etc/nginx/nginx.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询是否开启80端口则</span></span><br><span class="line">firewall-cmd --query-port=80/tcp --permanent</span><br><span class="line"><span class="comment"># 开启80端口</span></span><br><span class="line">firewall-cmd --add-port=80/tcp --permanent</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># SELinux 设置</span></span><br><span class="line"><span class="comment"># 查看 SELinux 模式</span></span><br><span class="line">getenforce</span><br><span class="line"><span class="comment"># 查看 SELinux 状态与模式等</span></span><br><span class="line">sestatus</span><br><span class="line"><span class="comment"># 关闭 SELinux</span></span><br><span class="line">vim /etc/selinux/config</span><br><span class="line">SELINUX=disabled</span><br><span class="line"><span class="comment"># 查看 nginx 是否受限制</span></span><br><span class="line">ps -eZ | grep nginx</span><br><span class="line"><span class="comment"># 查看文件受限</span></span><br><span class="line">ll -Zd</span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://tengine.taobao.org/nginx_docs/cn/docs/" target="_blank" rel="noopener">淘宝翻译的中文文档</a></li>
+<li><a href="https://nginxconfig.io/" target="_blank" rel="noopener">nginx 在线配置</a></li>
+</ul>
+
       
     </div>
 
@@ -1063,7 +1068,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-text">安装</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

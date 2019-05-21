@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Supervisor 是一个用 Python 写在类 UNIX 中的进程管理工具，可以很方便的用来启动、重启、关闭控制许多进程。Supervisor易于学习，配置文件很简单；它集中管理进程；通过 fork/exec 启动子进程并对它高效控制；它兼容除 windows 外的类 UNIX 系统，在Linux，Mac OS X，Solaris和FreeBSD上经过测试和支持。 Supervisor 拥有">
+<meta name="keywords" content="linux,supervisor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Supervisor 使用笔记">
+<meta property="og:url" content="http://blog.imgavin.me/2019/05/21/supervisor-note/index.html">
+<meta property="og:site_name" content="Gavin&#39;s Blog">
+<meta property="og:description" content="Supervisor 是一个用 Python 写在类 UNIX 中的进程管理工具，可以很方便的用来启动、重启、关闭控制许多进程。Supervisor易于学习，配置文件很简单；它集中管理进程；通过 fork/exec 启动子进程并对它高效控制；它兼容除 windows 外的类 UNIX 系统，在Linux，Mac OS X，Solaris和FreeBSD上经过测试和支持。 Supervisor 拥有">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-05-21T08:52:14.804Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Supervisor 使用笔记">
+<meta name="twitter:description" content="Supervisor 是一个用 Python 写在类 UNIX 中的进程管理工具，可以很方便的用来启动、重启、关闭控制许多进程。Supervisor易于学习，配置文件很简单；它集中管理进程；通过 fork/exec 启动子进程并对它高效控制；它兼容除 windows 外的类 UNIX 系统，在Linux，Mac OS X，Solaris和FreeBSD上经过测试和支持。 Supervisor 拥有">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Gavin's Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://blog.imgavin.me/2019/05/21/supervisor-note/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Supervisor 使用笔记 | Gavin's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gavin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">宁愿小众,不愿平庸</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">主页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-技术">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-tech/" rel="section">技术</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-生活">
+
+    
+    
+    
+
+    
+
+    <a href="/2014/08/24/page-life/" rel="section">生活</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+
+    
+
+    <a href="/about" rel="section">关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 't-bzD9AonCuAKSmSy7ZA','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.imgavin.me/2019/05/21/supervisor-note/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gavin">
+      <meta itemprop="description" content="宁愿小众,不愿平庸">
+      <meta itemprop="image" content="/uploads/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gavin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Supervisor 使用笔记
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-21 10:49:41" itemprop="dateCreated datePublished" datetime="2019-05-21T10:49:41+08:00">2019-05-21</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/21/supervisor-note/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/05/21/supervisor-note/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/05/21/supervisor-note/" class="leancloud_visitors" data-flag-title="Supervisor 使用笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="http://supervisord.org/" target="_blank" rel="noopener">Supervisor</a> 是一个用 Python 写在类 UNIX 中的进程管理工具，可以很方便的用来启动、重启、关闭控制许多进程。Supervisor易于学习，配置文件很简单；它集中管理进程；通过 fork/exec 启动子进程并对它高效控制；它兼容除 windows 外的类 UNIX 系统，在Linux，Mac OS X，Solaris和FreeBSD上经过测试和支持。</p>
+<p>Supervisor 拥有服务端 <strong>supervisord</strong> 和客户端 <strong>supervisorctl</strong> 。</p>
+<a id="more"></a>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><h2 id="使用-Python-包管理工具-pip-安装"><a href="#使用-Python-包管理工具-pip-安装" class="headerlink" title="使用 Python 包管理工具 pip 安装"></a>使用 Python 包管理工具 pip 安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install supervisor</span><br></pre></td></tr></table></figure>
+<h2 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h2><p>安装完成后，你就可以运行命令 <code>echo_supervisord_conf</code> 来打印 Supervisor 的配置样例。然后你就可以再运行<code>echo_supervisor_conf &gt; /etc/supervisord.conf</code> 来创建配置文件，启动时会默认读取文件<code>/etc/supervisord.conf</code>。或者在启动时指定 <code>-c</code> 参数来指定配置文件的路径。</p>
+<p>配置文件创建完成后，可按照你自己的需求来自行配置文件。</p>
+<h1 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h1><h2 id="运行-supervisord"><a href="#运行-supervisord" class="headerlink" title="运行 supervisord"></a>运行 supervisord</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisord -c /etc/supervisord.conf</span><br></pre></td></tr></table></figure>
+<h2 id="supervisord-命令行参数"><a href="#supervisord-命令行参数" class="headerlink" title="supervisord 命令行参数"></a>supervisord 命令行参数</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">参数</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">-c FILE, –configuration=FILE</td>
+<td style="text-align:center">supervisord 配置文件路径</td>
+</tr>
+<tr>
+<td style="text-align:left">-n, –nodaemon</td>
+<td style="text-align:center">在前台运行 supervisord</td>
+</tr>
+<tr>
+<td style="text-align:left">-h, –help</td>
+<td style="text-align:center">命令行帮助信息</td>
+</tr>
+<tr>
+<td style="text-align:left">-u USER, –user=USER</td>
+<td style="text-align:center">UNIX 用户名或数字标识。以什么用户来运行 supervisord</td>
+</tr>
+<tr>
+<td style="text-align:left">-m OCTAL, –umask=OCTAL</td>
+<td style="text-align:center">设置 umask 如：022</td>
+</tr>
+<tr>
+<td style="text-align:left">-d PATH, –directory=PATH</td>
+<td style="text-align:center">当supervisord作为守护进程运行时，在守护进程之前 cd 到此目录。</td>
+</tr>
+<tr>
+<td style="text-align:left">-l FILE, –logfile=FILE</td>
+<td style="text-align:center">指定 supervisord 的日志路径</td>
+</tr>
+<tr>
+<td style="text-align:left">-y BYTES, –logfile_maxbytes=BYTES</td>
+<td style="text-align:center">日志最大占用空间 默认字节。如：’1’ 为1字节，’1MB’为1兆字节，’1GB’为1千兆字节</td>
+</tr>
+<tr>
+<td style="text-align:left">-z NUM, –logfile_backups=NUM</td>
+<td style="text-align:center">日志备份数</td>
+</tr>
+<tr>
+<td style="text-align:left">-e LEVEL, –loglevel=LEVEL</td>
+<td style="text-align:center">日志记录级别。<code>trace</code>, <code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>, <code>critical</code></td>
+</tr>
+<tr>
+<td style="text-align:left">-j FILE, –pidfile=FILE</td>
+<td style="text-align:center">supervisord 启动时的 pid 写入的文件路径</td>
+</tr>
+<tr>
+<td style="text-align:left">-i STRING, –identifier=STRING</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:left">-q PATH, –childlogdir=PATH</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:left">-k, –nocleanup</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:left">-a NUM, –minfds=NUM</td>
+<td style="text-align:center">启动前，supervisord 可用的文件描述符数</td>
+</tr>
+<tr>
+<td style="text-align:left">-t, –strip_ansi</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:left">-v, –version</td>
+<td style="text-align:center">打印版本号</td>
+</tr>
+<tr>
+<td style="text-align:left">–profile_options=LIST</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:left">–minprocs=NUM</td>
+<td style="text-align:center">在成功启动之前，supervisord进程可用的最小OS进程槽数</td>
+</tr>
+</tbody>
+</table>
+<h2 id="运行-supervisorctl"><a href="#运行-supervisorctl" class="headerlink" title="运行 supervisorctl"></a>运行 supervisorctl</h2><h2 id="supervisorctl-命令行参数"><a href="#supervisorctl-命令行参数" class="headerlink" title="supervisorctl 命令行参数"></a>supervisorctl 命令行参数</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-c, –configuration</td>
+<td style="text-align:center">配置文件路径（默认为/etc/supervisord.conf）</td>
+</tr>
+<tr>
+<td>-h, –help</td>
+<td style="text-align:center">命令行帮助信息</td>
+</tr>
+<tr>
+<td>-i, –interactive</td>
+<td style="text-align:center">启动交互式 shell</td>
+</tr>
+<tr>
+<td>-s, –serverurl URL</td>
+<td style="text-align:center">supervisord服务器正在侦听的URL（默认为”<a href="http://localhost:9001&quot;" target="_blank" rel="noopener">http://localhost:9001&quot;</a> ）</td>
+</tr>
+<tr>
+<td>-u, –username</td>
+<td style="text-align:center">身份验证用户名</td>
+</tr>
+<tr>
+<td>-p, –password</td>
+<td style="text-align:center">身份验证密码</td>
+</tr>
+<tr>
+<td>-r, –history-file</td>
+<td style="text-align:center">保留历史记录？</td>
+</tr>
+</tbody>
+</table>
+<h2 id="supervisorctl-Actions"><a href="#supervisorctl-Actions" class="headerlink" title="supervisorctl Actions"></a>supervisorctl Actions</h2><table>
+<thead>
+<tr>
+<th>Action</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>help</td>
+<td style="text-align:center">帮助信息</td>
+</tr>
+<tr>
+<td>help &lt;action></td>
+<td style="text-align:center">打印 action 的帮助信息</td>
+</tr>
+<tr>
+<td>add &lt;name> […]</td>
+<td style="text-align:center">更新进程或组的配置</td>
+</tr>
+<tr>
+<td>remove &lt;name> […]</td>
+<td style="text-align:center">删除进程或组的配置</td>
+</tr>
+<tr>
+<td>update</td>
+<td style="text-align:center">重新加载配置，重启受影响的进程</td>
+</tr>
+<tr>
+<td>update all</td>
+<td style="text-align:center">重新加载配置，重启受影响的进程</td>
+</tr>
+<tr>
+<td>update &lt;gname> […]</td>
+<td style="text-align:center">更新指定组，重启受影响的进程</td>
+</tr>
+<tr>
+<td>clear &lt;name></td>
+<td style="text-align:center">清除进程日志文件</td>
+</tr>
+<tr>
+<td>clear &lt;name> &lt;name></td>
+<td style="text-align:center">清除多个进程日志文件</td>
+</tr>
+<tr>
+<td>clear all</td>
+<td style="text-align:center">清除所有进程日志文件</td>
+</tr>
+<tr>
+<td>fg &lt;process></td>
+<td style="text-align:center">进入一个进程的前端界面，然后按 Ctrl+C 退出</td>
+</tr>
+<tr>
+<td>pid</td>
+<td style="text-align:center">获得supervisord的PID</td>
+</tr>
+<tr>
+<td>pid &lt;name></td>
+<td style="text-align:center">按名称获取单个子进程的PID</td>
+</tr>
+<tr>
+<td>pid all</td>
+<td style="text-align:center">获取每个子进程的PID，每行一个</td>
+</tr>
+<tr>
+<td>reload</td>
+<td style="text-align:center">重新启动</td>
+</tr>
+<tr>
+<td>reread</td>
+<td style="text-align:center">重新加载守护进程的配置文件</td>
+</tr>
+<tr>
+<td>restart &lt;name></td>
+<td style="text-align:center">重新启动进程。注意：重新启动不会重新读取配置文件</td>
+</tr>
+<tr>
+<td>restart &lt;gname>:*</td>
+<td style="text-align:center">重新启动组中所有进程。注意：重新启动不会重新读取配置文件</td>
+</tr>
+<tr>
+<td>restart &lt;name> &lt;name></td>
+<td style="text-align:center">重新启动多个进程或组。注意：重新启动不会重新读取配置文件</td>
+</tr>
+<tr>
+<td>restart all</td>
+<td style="text-align:center">重新启动所有进程。注意：重新启动不会重新读取配置文件</td>
+</tr>
+<tr>
+<td>signal</td>
+<td style="text-align:center">没有信号帮助？</td>
+</tr>
+<tr>
+<td>start &lt;name></td>
+<td style="text-align:center">启动一个进程</td>
+</tr>
+<tr>
+<td>start &lt;gname>:*</td>
+<td style="text-align:center">启动组中所有进程</td>
+</tr>
+<tr>
+<td>start &lt;name> &lt;name></td>
+<td style="text-align:center">启动多个进程和组</td>
+</tr>
+<tr>
+<td>start all</td>
+<td style="text-align:center">启动所有进程</td>
+</tr>
+<tr>
+<td>status</td>
+<td style="text-align:center">获取所有进程状态</td>
+</tr>
+<tr>
+<td>status &lt;name></td>
+<td style="text-align:center">按名称获取一个进程状态</td>
+</tr>
+<tr>
+<td>status &lt;name> &lt;name></td>
+<td style="text-align:center">获取多个进程状态</td>
+</tr>
+<tr>
+<td>stop &lt;name></td>
+<td style="text-align:center">停止一个进程</td>
+</tr>
+<tr>
+<td>stop &lt;gname>:*</td>
+<td style="text-align:center">停止组中所有进程</td>
+</tr>
+<tr>
+<td>stop &lt;name> &lt;name></td>
+<td style="text-align:center">停止多个进程和组</td>
+</tr>
+<tr>
+<td>stop all</td>
+<td style="text-align:center">停止所有进程</td>
+</tr>
+<tr>
+<td>tail [-f] &lt;name> [stdout &#124; stderr] (default stdout)</td>
+<td style="text-align:center">输出进程日志</td>
+</tr>
+</tbody>
+</table>
+<h2 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h2><p>可以发送信号到 <strong>supervisord</strong> 以执行某些动作。可以将信号发送到单个 <strong>supervisord</strong> 进程，此进程标识可以在配置文件的 <strong>[supervisord]</strong> 部分中的 <strong>pidfile</strong> 参数找到</p>
+<ul>
+<li><p><code>SIGTERM</code></p>
+<p><strong>supervisord</strong> 及其所有子进程将关闭。这可能需要几秒钟。</p>
+</li>
+<li><p><code>SIGINT</code></p>
+<p><strong>supervisord</strong> 及其所有子进程将关闭。这可能需要几秒钟。</p>
+</li>
+<li><p><code>SIGQUIT</code></p>
+<p><strong>supervisord</strong> 及其所有子进程将关闭。这可能需要几秒钟。</p>
+</li>
+<li><p><code>SIGHUP</code></p>
+<p><strong>supervisord</strong> 将停止所有进程，重新加载配置文件并启动所有进程。</p>
+</li>
+<li><p><code>SIGUSR2</code></p>
+<p><strong>supervisord</strong> 将重新打开主日志和所有子日志。</p>
+</li>
+</ul>
+<h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">;*为必须填写项</span></span><br><span class="line"><span class="comment">;*[program:应用名称]</span></span><br><span class="line"><span class="section">[program:cat]</span></span><br><span class="line"><span class="comment">;*命令路径,如果使用python启动的程序应该为 python /home/test.py,</span></span><br><span class="line"><span class="comment">;不建议放入/home/user/, 对于非user用户一般情况下是不能访问</span></span><br><span class="line"><span class="attr">command</span>=/bin/cat</span><br><span class="line"><span class="comment">;当numprocs为1时,process_name=%(program_name)s</span></span><br><span class="line"><span class="comment">;当numprocs&gt;=2时,%(program_name)s_%(process_num)02d</span></span><br><span class="line"><span class="attr">process_name</span>=%(program_name)s</span><br><span class="line"><span class="comment">;使用supervisor还有一个更大的好处就是，可以快速开启多个进程，配置参数如下：</span></span><br><span class="line"><span class="comment">;进程数量,表示对同一个配置开启1个线程。</span></span><br><span class="line"><span class="attr">numprocs</span>=<span class="number">1</span></span><br><span class="line"><span class="comment">;执行目录,若有/home/supervisor_test/test1.py</span></span><br><span class="line"><span class="comment">;将directory设置成/home/supervisor_test</span></span><br><span class="line"><span class="comment">;则command只需设置成python test1.py</span></span><br><span class="line"><span class="comment">;否则command必须设置成绝对执行目录</span></span><br><span class="line"><span class="attr">directory</span>=/tmp</span><br><span class="line"><span class="comment">;掩码:--- -w- -w-, 转换后rwx r-x w-x</span></span><br><span class="line"><span class="attr">umask</span>=<span class="number">022</span></span><br><span class="line"><span class="comment">;优先级,值越高,最后启动,最先被关闭,默认值999</span></span><br><span class="line"><span class="attr">priority</span>=<span class="number">999</span></span><br><span class="line"><span class="comment">;如果是true,当supervisor启动时,程序将会自动启动</span></span><br><span class="line"><span class="attr">autostart</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment">;*自动重启</span></span><br><span class="line"><span class="attr">autorestart</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment">;启动延时执行,默认1秒</span></span><br><span class="line"><span class="attr">startsecs</span>=<span class="number">10</span></span><br><span class="line"><span class="comment">;启动尝试次数,默认3次</span></span><br><span class="line"><span class="attr">startretries</span>=<span class="number">3</span></span><br><span class="line"><span class="comment">;当退出码是0,2时,执行重启,默认值0,2</span></span><br><span class="line"><span class="attr">exitcodes</span>=<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="comment">;停止信号,默认TERM</span></span><br><span class="line"><span class="comment">;中断:INT(类似于Ctrl+C)(kill -INT pid),退出后会将写文件或日志(推荐)</span></span><br><span class="line"><span class="comment">;终止:TERM(kill -TERM pid)</span></span><br><span class="line"><span class="comment">;挂起:HUP(kill -HUP pid),注意与Ctrl+Z/kill -stop pid不同</span></span><br><span class="line"><span class="comment">;从容停止:QUIT(kill -QUIT pid)</span></span><br><span class="line"><span class="comment">;KILL, USR1, USR2其他见命令(kill -l),说明1</span></span><br><span class="line"><span class="attr">stopsignal</span>=TERM</span><br><span class="line"><span class="attr">stopwaitsecs</span>=<span class="number">10</span></span><br><span class="line"><span class="comment">;*以root用户执行</span></span><br><span class="line"><span class="attr">user</span>=root</span><br><span class="line"><span class="comment">;有时候用 Supervisor 托管的程序还会有子进程（如 Tornado），如果只杀死主进程，子进程就可能变成孤儿进程。</span></span><br><span class="line"><span class="comment">;通过这两项配置(改为true)来确保所有子进程都能正确停止,默认是false：</span></span><br><span class="line"><span class="attr">stopasgroup</span>=<span class="literal">false</span></span><br><span class="line"><span class="attr">killasgroup</span>=<span class="literal">false</span></span><br><span class="line"><span class="comment">;重定向,把stderr重定向到stdout，默认false；</span></span><br><span class="line"><span class="attr">redirect_stderr</span>=<span class="literal">false</span></span><br><span class="line"><span class="comment">;标准日志输出</span></span><br><span class="line"><span class="attr">stdout_logfile</span>=/a/path</span><br><span class="line"><span class="comment">;标准日志文件大小，默认50MB</span></span><br><span class="line"><span class="attr">stdout_logfile_maxbytes</span>=<span class="number">1</span>MB</span><br><span class="line"><span class="comment">;标准日志文件大小，默认50MB</span></span><br><span class="line"><span class="attr">stdout_logfile_backups</span>=<span class="number">10</span></span><br><span class="line"><span class="attr">stdout_capture_maxbytes</span>=<span class="number">1</span>MB</span><br><span class="line"><span class="comment">;标准日志输出</span></span><br><span class="line"><span class="attr">stderr_logfile</span>=/a/path</span><br><span class="line"><span class="attr">stderr_logfile_maxbytes</span>=<span class="number">1</span>MB</span><br><span class="line"><span class="attr">stderr_logfile_backups</span>=<span class="number">10</span></span><br><span class="line"><span class="attr">stderr_capture_maxbytes</span>=<span class="number">1</span>MB</span><br><span class="line"><span class="comment">;环境变量设置</span></span><br><span class="line"><span class="attr">environment</span>=A=<span class="string">"1"</span>,B=<span class="string">"2"</span></span><br><span class="line"><span class="attr">serverurl</span>=AUTO</span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="http://supervisord.org/" target="_blank" rel="noopener">官方文档</a></li>
+<li><a href="https://www.rddoc.com/doc/Supervisor/3.3.1/zh/" target="_blank" rel="noopener">中文翻译文档</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay_cut.jpg" alt="Gavin 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay_cut.jpg" alt="Gavin 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/supervisor/" rel="tag"># supervisor</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+               <div id="needsharebutton-postbottom">
+                 <span class="btn">
+                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                 </span>
+               </div>
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/15/linux-cmd-yum/" rel="next" title="Linux命令 - yum">
+                <i class="fa fa-chevron-left"></i> Linux命令 - yum
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/21/mac-homebrew-deprecated/" rel="prev" title="Mac 使用 homebrew 安装过时包">
+                Mac 使用 homebrew 安装过时包 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/portrait.jpg" alt="Gavin">
+            
+              <p class="site-author-name" itemprop="name">Gavin</p>
+              <p class="site-description motion-element" itemprop="description">宁愿小众,不愿平庸</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">79</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">121</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://github.com/gavin66" title="GitHub &rarr; https://github.com/gavin66" rel="noopener" target="_blank">GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.v2ex.com/member/ksaa0096329" title="V2EX &rarr; https://www.v2ex.com/member/ksaa0096329" rel="noopener" target="_blank">V2EX</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://segmentfault.com/u/gavin66" title="SegmentFault &rarr; https://segmentfault.com/u/gavin66" rel="noopener" target="_blank">SegmentFault</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="http://weibo.com/lanbert" title="微博 &rarr; http://weibo.com/lanbert" rel="noopener" target="_blank">微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.zhihu.com/people/Gavin23" title="知乎 &rarr; https://www.zhihu.com/people/Gavin23" rel="noopener" target="_blank">知乎</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                  <a href="https://www.douban.com/people/imgavin66" title="豆瓣 &rarr; https://www.douban.com/people/imgavin66" rel="noopener" target="_blank">豆瓣</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Python-包管理工具-pip-安装"><span class="nav-text">使用 Python 包管理工具 pip 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建配置文件"><span class="nav-text">创建配置文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行"><span class="nav-text">运行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#运行-supervisord"><span class="nav-text">运行 supervisord</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#supervisord-命令行参数"><span class="nav-text">supervisord 命令行参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行-supervisorctl"><span class="nav-text">运行 supervisorctl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#supervisorctl-命令行参数"><span class="nav-text">supervisorctl 命令行参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#supervisorctl-Actions"><span class="nav-text">supervisorctl Actions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号"><span class="nav-text">信号</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置文件"><span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gavin</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.6.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://gavin23.disqus.com/count.js" async></script>
+  
+
+  
+    <script>
+      var disqus_config = function () {
+        this.page.url = "http://blog.imgavin.me/2019/05/21/supervisor-note/";
+        this.page.identifier = "2019/05/21/supervisor-note/";
+        this.page.title = 'Supervisor 使用笔记';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://gavin23.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
+                .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function () {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "AhWzg6uJERcSBdfFp24rIGco-gzGzoHsz",
+                'X-LC-Key': "ygD46J8JRaC0GkifemEHlXCf",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+  <script src="/js/src/js.cookie.js?v=6.6.0"></script>
+  <script src="/js/src/scroll-cookie.js?v=6.6.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

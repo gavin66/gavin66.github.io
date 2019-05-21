@@ -142,7 +142,7 @@
 <meta property="og:site_name" content="Gavin&#39;s Blog">
 <meta property="og:description" content="Systemctl是一个systemd工具，主要负责控制systemd系统和服务管理器。 Systemd是一个系统管理守护进程、工具和库的集合，用于取代System V初始进程。Systemd的功能是用于集中管理和配置类UNIX系统。 在Linux生态系统中，Systemd被部署到了大多数的标准Linux发行版中，只有为数不多的几个发行版尚未部署。Systemd通常是所有其它守护进程的父进程，但并">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-23T08:55:57.149Z">
+<meta property="og:updated_time" content="2019-05-21T06:57:13.260Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux 命令 - systemctl">
 <meta name="twitter:description" content="Systemctl是一个systemd工具，主要负责控制systemd系统和服务管理器。 Systemd是一个系统管理守护进程、工具和库的集合，用于取代System V初始进程。Systemd的功能是用于集中管理和配置类UNIX系统。 在Linux生态系统中，Systemd被部署到了大多数的标准Linux发行版中，只有为数不多的几个发行版尚未部署。Systemd通常是所有其它守护进程的父进程，但并">
@@ -522,7 +522,7 @@
 <p>在Linux生态系统中，Systemd被部署到了大多数的标准Linux发行版中，只有为数不多的几个发行版尚未部署。Systemd通常是所有其它守护进程的父进程，但并非总是如此。</p>
 <a id="more"></a>
 <h1 id="Systemd初体验和Systemctl基础"><a href="#Systemd初体验和Systemctl基础" class="headerlink" title="Systemd初体验和Systemctl基础"></a>Systemd初体验和Systemctl基础</h1><h2 id="首先检查你的系统中是否安装有systemd并确定当前安装的版本"><a href="#首先检查你的系统中是否安装有systemd并确定当前安装的版本" class="headerlink" title="首先检查你的系统中是否安装有systemd并确定当前安装的版本"></a>首先检查你的系统中是否安装有systemd并确定当前安装的版本</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  systemctl --version</span></span><br><span class="line">systemd 219</span><br><span class="line">+PAM +AUDIT +SELINUX +IMA -APPARMOR +SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT +GNUTLS +ACL +XZ -LZ4 -SECCOMP +BLKID +ELFUTILS +KMOD +IDN</span><br></pre></td></tr></table></figure>
-<p>上例中很清楚地表明，我们安装了215版本的systemd。</p>
+<p>上例中很清楚地表明，我们安装了219版本的systemd。</p>
 <h2 id="检查systemd和systemctl的二进制文件和库文件的安装位置"><a href="#检查systemd和systemctl的二进制文件和库文件的安装位置" class="headerlink" title="检查systemd和systemctl的二进制文件和库文件的安装位置"></a>检查systemd和systemctl的二进制文件和库文件的安装位置</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  whereis systemd</span></span><br><span class="line">systemd: /usr/lib/systemd /etc/systemd /usr/share/systemd /usr/share/man/man1/systemd.1.gz</span><br><span class="line"></span><br><span class="line"><span class="comment">#  whereis systemctl</span></span><br><span class="line">systemctl: /usr/bin/systemctl /usr/share/man/man1/systemctl.1.gz</span><br></pre></td></tr></table></figure>
 <h2 id="检查systemd是否运行"><a href="#检查systemd是否运行" class="headerlink" title="检查systemd是否运行"></a>检查systemd是否运行</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  ps -eaf | grep systemd</span></span><br><span class="line">root         1     0  0 3月18 ?       00:03:11 /usr/lib/systemd/systemd --switched-root --system --deserialize 21</span><br><span class="line">root       323     1  0 3月18 ?       00:01:45 /usr/lib/systemd/systemd-journald</span><br><span class="line">root       348     1  0 3月18 ?       00:00:00 /usr/lib/systemd/systemd-udevd</span><br><span class="line">dbus       459     1  0 3月18 ?       00:02:49 /bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation</span><br><span class="line">root       468     1  0 3月18 ?       00:01:23 /usr/lib/systemd/systemd-logind</span><br></pre></td></tr></table></figure>
 <h2 id="分析systemd启动进程"><a href="#分析systemd启动进程" class="headerlink" title="分析systemd启动进程"></a>分析systemd启动进程</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  systemd-analyze</span></span><br><span class="line">Startup finished <span class="keyword">in</span> 690ms (kernel) + 1.288s (initrd) + 8.138s (userspace) = 10.117s</span><br></pre></td></tr></table></figure>
@@ -757,7 +757,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-count">79</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1015,7 +1015,21 @@
                     
                       
                     
-                    <span class="site-state-item-count">114</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">121</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

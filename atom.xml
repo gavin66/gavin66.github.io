@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.imgavin.me/"/>
-  <updated>2019-05-21T08:33:22.244Z</updated>
+  <updated>2019-05-24T09:57:42.833Z</updated>
   <id>http://blog.imgavin.me/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>个人条件</title>
+    <link href="http://blog.imgavin.me/2019/05/24/date/"/>
+    <id>http://blog.imgavin.me/2019/05/24/date/</id>
+    <published>2019-05-24T09:17:47.000Z</published>
+    <updated>2019-05-24T09:57:42.833Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li><p>基本</p><p>男（1991.7.23，174cm，68kg），天津人，专科（计算机信息技术），北京工作，程序员</p></li><li><p>经济</p><p>本人无车无房，老爹河西区有一套老破小，静海有一套100+平米的养老房。</p><p>个人存款一半在货币基金（余额宝），一半在指数基金，还有北京公积金（一季度一取）。即使失业，存款也够我吃几年。存款具体数字不透露。</p><p>目前每月税后工资 15-16k（新的税改，阶梯扣税）</p></li><li><p>家庭</p><p>老爹已退休且有退休金，身体健康，平时会跟老年团旅行，不用我操心。未来计划静海养老，以种蔬菜为乐。</p><p>母亲2013年乳腺癌去世。</p><p>爷爷奶奶姥姥姥爷都已不在，由于历史原因亲戚也不多，家族关系很简单，未来只需要全心全意照顾老爹。</p></li><li><p>爱好</p><p>喜欢一个人徒步瞎逛，去过西藏，新疆，内蒙，东三省等</p><p>玩游戏(PS，NS，PC)，但近几年玩的较少</p></li><li><p>自我评价</p><p>儿时内向，现在均衡，平时话少。</p><p>做事认真，有强迫症，些许洁癖。</p><p>不吸烟喝酒，无不良嗜好。</p><p>长相给自己打4分。</p></li><li><p>照片</p><p>平时不会自拍，这类照片很少，将就看</p><img src="/2019/05/24/date/p1.jpg"><img src="/2019/05/24/date/p2.jpg"></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;&lt;p&gt;基本&lt;/p&gt;
+&lt;p&gt;男（1991.7.23，174cm，68kg），天津人，专科（计算机信息技术），北京工作，程序员&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;经济&lt;/p&gt;
+&lt;p&gt;本人无车无房，老爹河西区有一套老破小，静海有一套100+平米的养老房。&lt;/p&gt;
+&lt;p
+      
+    
+    </summary>
+    
+      <category term="生活" scheme="http://blog.imgavin.me/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+    
+      <category term="相亲" scheme="http://blog.imgavin.me/tags/%E7%9B%B8%E4%BA%B2/"/>
+    
+  </entry>
   
   <entry>
     <title>Hexo 中 markdown语法特殊字符转义</title>
@@ -543,33 +574,6 @@
       <category term="压力测试" scheme="http://blog.imgavin.me/tags/%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95/"/>
     
       <category term="负载测试" scheme="http://blog.imgavin.me/tags/%E8%B4%9F%E8%BD%BD%E6%B5%8B%E8%AF%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Python 常用库整理</title>
-    <link href="http://blog.imgavin.me/2017/08/24/python-libs/"/>
-    <id>http://blog.imgavin.me/2017/08/24/python-libs/</id>
-    <published>2017-08-24T03:41:43.000Z</published>
-    <updated>2017-11-02T08:20:39.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="标准库"><a href="#标准库" class="headerlink" title="标准库"></a>标准库</h1><h1 id="第三方库"><a href="#第三方库" class="headerlink" title="第三方库"></a>第三方库</h1><h2 id="virtualenv"><a href="#virtualenv" class="headerlink" title="virtualenv"></a><a href="https://virtualenv.pypa.io/en/stable/" target="_blank" rel="noopener">virtualenv</a></h2><p><strong>对每个项目都可创建独立的 Python 环境，互不冲突。</strong></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个项目环境</span></span><br><span class="line">$ virtualenv ENV</span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活脚本，只是改变环境 path</span></span><br><span class="line">$ source bin/activate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取消激活，还原</span></span><br><span class="line">(ENV)$ deactivate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除环境</span></span><br><span class="line">$ rm -r /path/to/ENV</span><br></pre></td></tr></table></figure><h2 id="lxml"><a href="#lxml" class="headerlink" title="lxml"></a><a href="http://lxml.de/" target="_blank" rel="noopener">lxml</a></h2><p><strong>非常快速灵活的处理 HTML 和 XML</strong></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">html = <span class="string">'&lt;html&gt;&lt;head&gt;&lt;title&gt;test&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;page title&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;'</span></span><br><span class="line">tree = etree.HTML(html) <span class="comment"># 解析 HTML</span></span><br><span class="line">h1 = tree.xpath(<span class="string">'//h1'</span>)[<span class="number">0</span>] <span class="comment"># 使用 xpath 匹配 h1</span></span><br><span class="line">print(h1.text)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印结果</span></span><br><span class="line">page title</span><br></pre></td></tr></table></figure><h2 id="Flask"><a href="#Flask" class="headerlink" title="Flask"></a><a href="http://flask.pocoo.org/" target="_blank" rel="noopener">Flask</a></h2><p><strong>Web 微型框架</strong></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一个最小的 Web 应用</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello World!'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul><li><a href="https://github.com/vinta/awesome-python" target="_blank" rel="noopener">Awesome Python</a> 所有需要的 Python 库、框架、工具、资源等都可以在这里找到。</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;标准库&quot;&gt;&lt;a href=&quot;#标准库&quot; class=&quot;headerlink&quot; title=&quot;标准库&quot;&gt;&lt;/a&gt;标准库&lt;/h1&gt;&lt;h1 id=&quot;第三方库&quot;&gt;&lt;a href=&quot;#第三方库&quot; class=&quot;headerlink&quot; title=&quot;第三方库&quot;&gt;&lt;/a&gt;第三方
-      
-    
-    </summary>
-    
-      <category term="技术" scheme="http://blog.imgavin.me/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="python" scheme="http://blog.imgavin.me/tags/python/"/>
-    
-      <category term="library" scheme="http://blog.imgavin.me/tags/library/"/>
     
   </entry>
   
